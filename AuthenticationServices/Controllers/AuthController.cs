@@ -1,12 +1,11 @@
-﻿using APIS.DTOs.RequestDto;
+﻿using APIS.DTOs.AuthenticationDTOs.ResponseDto;
+using APIS.DTOs.RequestDto;
 using APIS.DTOs.ResponseDto;
+using AuthenticationServices.DTOs.AuthenticationDTOs.ResponseDto;
 using AuthenticationServices.Models;
 using AuthenticationServices.Services.RoleServices;
 using AuthenticationServices.Services.UserServices;
 using AutoMapper;
-using AutoMapper.Execution;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -171,12 +170,28 @@ namespace APIS.Controllers.Authentication
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetUsers() => userService.GetUsers();
+        public ActionResult<ServiceResponse<List<UserResponse>>> GetUsers()
+        {
+            var response = new ServiceResponse<List<UserResponse>>();
+            var userResponseList = new List<UserResponse>();
+            var userList = userService.GetUsers();
+            foreach (var user in userList)
+            {
+                userResponseList.Add(_mapper.Map<UserResponse>(user));
+            }
+            response.Data = userResponseList;
+            response.Message = "Get User List";
+            response.Status = 200;
+            response.TotalDataList = userResponseList.Count;
+            return response;
+        }
 
         [HttpGet("id")]
-        public ActionResult<User> GetUserById(int id)
+        public ActionResult<UserResponse> GetUserById(int id)
         {
-            return userService.GetUserById(id);
+            var user = userService.GetUserById(id);
+            var userResponse = _mapper.Map<UserResponse>(user);
+            return userResponse;
         }
 
     }
