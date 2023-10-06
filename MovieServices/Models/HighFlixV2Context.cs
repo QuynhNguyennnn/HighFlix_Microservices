@@ -27,6 +27,8 @@ public partial class HighFlixV2Context : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<Statistic> Statistics { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -37,7 +39,7 @@ public partial class HighFlixV2Context : DbContext
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Category__19093A0BFF06ACD3");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Category__19093A0BDEDE5B82");
 
             entity.ToTable("Category");
 
@@ -46,7 +48,7 @@ public partial class HighFlixV2Context : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.CommentId).HasName("PK__Comment__C3B4DFCA736E9E23");
+            entity.HasKey(e => e.CommentId).HasName("PK__Comment__C3B4DFCABFDA85DA");
 
             entity.ToTable("Comment");
 
@@ -65,7 +67,7 @@ public partial class HighFlixV2Context : DbContext
 
         modelBuilder.Entity<Episode>(entity =>
         {
-            entity.HasKey(e => e.EpisodeId).HasName("PK__Episode__AC6609F5D47F0488");
+            entity.HasKey(e => e.EpisodeId).HasName("PK__Episode__AC6609F583FC66BD");
 
             entity.ToTable("Episode");
 
@@ -82,7 +84,7 @@ public partial class HighFlixV2Context : DbContext
 
         modelBuilder.Entity<Movie>(entity =>
         {
-            entity.HasKey(e => e.MovieId).HasName("PK__Movie__4BD2941AF838C0A0");
+            entity.HasKey(e => e.MovieId).HasName("PK__Movie__4BD2941AB311DD2F");
 
             entity.ToTable("Movie");
 
@@ -114,16 +116,29 @@ public partial class HighFlixV2Context : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE1AE0065894");
+            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE1A471ABB6D");
 
             entity.ToTable("Role");
 
             entity.Property(e => e.RoleName).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<Statistic>(entity =>
+        {
+            entity.ToTable("Statistic");
+
+            entity.Property(e => e.StatisticId).ValueGeneratedNever();
+            entity.Property(e => e.Date).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Movie).WithMany(p => p.Statistics)
+                .HasForeignKey(d => d.MovieId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Statistic_Movie");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C6E4AC3BA");
+            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C317106C8");
 
             entity.ToTable("User");
 

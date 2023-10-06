@@ -33,14 +33,6 @@ public partial class Movie
 
     public string? Comments { get; set; }
 
-    public int? ViewByDate { get; set; }
-
-    public int? ViewByWeek { get; set; }
-
-    public int? ViewByMonth { get; set; }
-
-    public int? ViewByYear { get; set; }
-
     public bool IsActive { get; set; }
 
     public virtual ICollection<Comment> CommentsNavigation { get; set; } = new List<Comment>();
@@ -50,4 +42,6 @@ public partial class Movie
     public virtual ICollection<MovieCategory> MovieCategories { get; set; } = new List<MovieCategory>();
 
     public virtual User PostedByUserNavigation { get; set; } = null!;
+
+    public virtual ICollection<Statistic> Statistics { get; set; } = new List<Statistic>();
 }
