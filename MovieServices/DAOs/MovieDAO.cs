@@ -53,10 +53,10 @@ namespace MovieServices.DAOs
                 using (var context = new HighFlixV2Context())
                 {
                     movie.IsActive = true;
-                    movie.ViewByDate = 0;
-                    movie.ViewByWeek = 0;
-                    movie.ViewByMonth = 0;
-                    movie.ViewByYear = 0;
+                    //movie.ViewByDate = 0;
+                    //movie.ViewByWeek = 0;
+                    //movie.ViewByMonth = 0;
+                    //movie.ViewByYear = 0;
 
                     context.Movies.Add(movie);
                     context.SaveChanges();
@@ -81,10 +81,10 @@ namespace MovieServices.DAOs
                     if (_movie != null)
                     {
                         movie.IsActive = _movie.IsActive;
-                        movie.ViewByDate = _movie.ViewByDate;
-                        movie.ViewByWeek = _movie.ViewByWeek;
-                        movie.ViewByMonth = _movie.ViewByMonth;
-                        movie.ViewByYear = _movie.ViewByYear;
+                        //movie.ViewByDate = _movie.ViewByDate;
+                        //movie.ViewByWeek = _movie.ViewByWeek;
+                        //movie.ViewByMonth = _movie.ViewByMonth;
+                        //movie.ViewByYear = _movie.ViewByYear;
 
                         // Sử dụng SetValues để cập nhật giá trị từ movie vào _movie
                         context.Entry(_movie).CurrentValues.SetValues(movie);
