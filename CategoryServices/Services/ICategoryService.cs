@@ -1,6 +1,12 @@
-﻿namespace CategoryServices.Services
+﻿using CategoryServices.Models;
+
+namespace CategoryServices.Services
 {
     public interface ICategoryService
     {
+        List<Category> GetCategoryList();
+        Category CreateCategory(Category category);
+        Category UpdateCategory(Category category);
+        Category DeleteCategory(int id);
     }
 }

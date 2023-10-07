@@ -66,7 +66,7 @@ namespace MovieServices.Controllers.Movie
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
-        public ActionResult<Models.Movie> Delete(int id)
+        public ActionResult<Models.Movie> DeleteMovie(int id)
         {
             return service.DeleteMovie(id);
         }
