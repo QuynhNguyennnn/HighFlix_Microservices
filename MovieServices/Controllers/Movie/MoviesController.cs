@@ -48,28 +48,43 @@ namespace MovieServices.Controllers.Movie
 
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
-        public ActionResult<Models.Movie> CreateMovie(AddMovieDto addMovieDto)
+        public ActionResult<ServiceResponse<Models.Movie>> CreateMovie(AddMovieDto addMovieDto)
         {
             Models.Movie movie = _mapper.Map<Models.Movie>(addMovieDto);
-
-            return service.CreateMovie(movie, addMovieDto.Categories);
+            movie = service.CreateMovie(movie, addMovieDto.Categories);
+            var response = new ServiceResponse<Models.Movie>();
+            response.Data = movie;
+            response.Message = "Create Movie";
+            response.Status = 200;
+            return response;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Update")]
-        public ActionResult<Models.Movie> UpdateMovie(UpdateMovieDto updateMovieDto)
+        public ActionResult<ServiceResponse<Models.Movie>> UpdateMovie(UpdateMovieDto updateMovieDto)
         {
             Models.Movie movie = _mapper.Map<Models.Movie>(updateMovieDto);
 
-            return service.UpdateMovie(movie, updateMovieDto.Categories);
+            movie = service.UpdateMovie(movie, updateMovieDto.Categories);
+            var response = new ServiceResponse<Models.Movie>();
+            response.Data = movie;
+            response.Message = "Update Movie";
+            response.Status = 200;
+            return response;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
-        public ActionResult<Models.Movie> DeleteMovie(int id)
+        public ActionResult<ServiceResponse<Models.Movie>> DeleteMovie(int id)
         {
-            return service.DeleteMovie(id);
+            Models.Movie movie = service.DeleteMovie(id);
+            var response = new ServiceResponse<Models.Movie>();
+            response.Data = movie;
+            response.Message = "Delete Movie";
+            response.Status = 200;
+            return response;
         }
+
         [HttpGet("Search")]
         public ActionResult<ServiceResponse<List<MovieResponse>>> SearchMovies([FromQuery] string searchMovieName)
         {

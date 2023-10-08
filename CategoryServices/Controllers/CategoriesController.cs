@@ -41,27 +41,42 @@ namespace CategoryServices.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
-        public ActionResult<Category> CreateCategory(AddCategoryDTO addCategoryDTO)
+        public ActionResult<ServiceResponse<Category>> CreateCategory(AddCategoryDTO addCategoryDTO)
         {
             Category category = _mapper.Map<Category>(addCategoryDTO);
-
-            return service.CreateCategory(category);
+            category = service.CreateCategory(category);
+            var response = new ServiceResponse<Category>();
+            response.Data = category;
+            response.Message = "Create Category";
+            response.Status = 200;
+            return response;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Update")]
-        public ActionResult<Category> UpdateCategory(UpdateCategoryDTO updateCategoryDTO)
+        public ActionResult<ServiceResponse<Category>> UpdateCategory(UpdateCategoryDTO updateCategoryDTO)
         {
             Category category = _mapper.Map<Category>(updateCategoryDTO);
 
-            return service.UpdateCategory(category);
+            category = service.UpdateCategory(category);
+            var response = new ServiceResponse<Category>();
+            response.Data = category;
+            response.Message = "Update Category";
+            response.Status = 200;
+            return response;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
-        public ActionResult<Category> DeleteCategory(int id)
+        public ActionResult<ServiceResponse<Category>> DeleteCategory(int id)
         {
-            return service.DeleteCategory(id);
+            Category category = service.DeleteCategory(id);
+
+            var response = new ServiceResponse<Category>();
+            response.Data = category;
+            response.Message = "Delete Category";
+            response.Status = 200;
+            return response;
         }
     }
 }
