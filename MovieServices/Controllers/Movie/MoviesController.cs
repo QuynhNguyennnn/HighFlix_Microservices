@@ -25,25 +25,23 @@ namespace MovieServices.Controllers.Movie
         public ActionResult<ServiceResponse<List<MovieResponse>>> GetMovieList()
         {
             var response = new ServiceResponse<List<MovieResponse>>();
-            var movieResponseList = new List<MovieResponse>();
-            var movieList = service.GetMovieList();
-            foreach (var movie in movieList)
-            {
-                movieResponseList.Add(_mapper.Map<MovieResponse>(movie));
-            }
-            response.Data = movieResponseList;
+            var movieList = service.GetMovieList(_mapper);
+            response.Data = movieList;
             response.Message = "Get Movie List";
             response.Status = 200;
-            response.TotalDataList = movieResponseList.Count;
+            response.TotalDataList = movieList.Count;
             return response;
         }
 
         [HttpGet("id")]
-        public ActionResult<MovieResponse> GetMovieById(int id)
+        public ActionResult<ServiceResponse<MovieResponse>> GetMovieById(int id)
         {
-            var movie = service.GetMovieById(id);
-            var movieResponse = _mapper.Map<MovieResponse>(movie);
-            return movieResponse;
+            var movie = service.GetMovieById(id, _mapper);
+            var response = new ServiceResponse<MovieResponse>();
+            response.Data = movie;
+            response.Message = "Get Movie";
+            response.Status = 200;
+            return response;
         }
 
         [Authorize(Roles = "Admin")]

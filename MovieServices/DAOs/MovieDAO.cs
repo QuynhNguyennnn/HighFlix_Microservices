@@ -1,12 +1,14 @@
-﻿using MovieServices.Models;
+﻿using AutoMapper;
+using MovieServices.DTOs.MovieDTOs.ResponseDTO;
+using MovieServices.Models;
 
 namespace MovieServices.DAOs
 {
     public class MovieDAO
     {
-        public static List<Movie> GetMovieList()
+        public static List<MovieResponse> GetMovieList(IMapper _mapper)
         {
-            List<Movie> movies = new List<Movie>();
+            List<MovieResponse> movies = new List<MovieResponse>();
             try
             {
                 using (var context = new HighFlixV2Context())
@@ -16,8 +18,13 @@ namespace MovieServices.DAOs
                     {
                         if (movie.IsActive)
                         {
-                            movies.Add(movie);
-
+                            List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                            MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                            movieCategories.ForEach(movieCategory =>
+                            {
+                                movieResponse.Categories += movieCategory.CategoryId.ToString();
+                            });
+                            movies.Add(movieResponse);
                         }
                     }
                 }
@@ -29,22 +36,29 @@ namespace MovieServices.DAOs
             return movies;
         }
 
-        public static Movie GetMovieById(int id)
+        public static MovieResponse GetMovieById(int id , IMapper _mapper)
         {
             Movie movie = new Movie();
+            MovieResponse movieResponse = new MovieResponse();
             try
             {
                 using (var context = new HighFlixV2Context())
                 {
                     movie = context.Movies.SingleOrDefault(mv => (mv.MovieId == id) && mv.IsActive);
                     movie.Description = movie.Description.Substring(2, movie.Description.Length - 3);
+                    List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                    movieResponse = _mapper.Map<MovieResponse>(movie);
+                    movieCategories.ForEach(movieCategory =>
+                    {
+                        movieResponse.Categories += movieCategory.CategoryId.ToString();
+                    });
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return movie;
+            return movieResponse;
         }
 
         public static Movie CreateMovie(Movie movie, List<int> cates)

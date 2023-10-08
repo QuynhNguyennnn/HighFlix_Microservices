@@ -29,6 +29,21 @@ namespace MovieServices.DAOs
             }
         }*/
 
+        public static List<MovieCategory> GetCategoryByMovieId(int movieId)
+        {
+            try
+            {
+                using (var context = new HighFlixV2Context())
+                {
+                    var listCate = context.MovieCategories.Where(mc => mc.MovieId == movieId).ToList();
+                    return listCate;
+                }
+            } catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public static void CreateMovieCategory(List<int> cates, int movieId)
         {
             try

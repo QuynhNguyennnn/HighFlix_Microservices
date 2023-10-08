@@ -39,6 +39,20 @@ namespace CategoryServices.Controllers
             return response;
         }
 
+        [HttpGet("id")]
+        public ActionResult<ServiceResponse<CategoryResponse>> GetCategoryById(int id)
+        {
+            var category = service.GetCategoryById(id);
+            var categoryResponse = _mapper.Map<CategoryResponse>(category);
+
+            var response = new ServiceResponse<CategoryResponse>();
+            response.Data = categoryResponse;
+            response.Message = "Get Category";
+            response.Status = 200;
+
+            return response;
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
         public ActionResult<ServiceResponse<Category>> CreateCategory(AddCategoryDTO addCategoryDTO)

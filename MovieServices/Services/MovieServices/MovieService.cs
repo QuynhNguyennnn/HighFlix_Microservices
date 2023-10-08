@@ -1,14 +1,16 @@
 ﻿
+using AutoMapper;
 using MovieServices.DAOs;
+using MovieServices.DTOs.MovieDTOs.ResponseDTO;
 using MovieServices.Models;
 
 namespace MovieServices.Services.MovieServices
 {
     public class MovieService : IMovieService
     {
-        public Movie GetMovieById(int id) => MovieDAO.GetMovieById(id);
+        public MovieResponse GetMovieById(int id, IMapper _mapper) => MovieDAO.GetMovieById(id, _mapper);
 
-        public List<Movie> GetMovieList() => MovieDAO.GetMovieList();
+        public List<MovieResponse> GetMovieList(IMapper _mapper) => MovieDAO.GetMovieList(_mapper);
 
         public Movie CreateMovie(Movie movie, List<int> cates) => MovieDAO.CreateMovie(movie, cates);
 
