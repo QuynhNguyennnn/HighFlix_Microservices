@@ -33,6 +33,18 @@ namespace MovieServices.Controllers.Movie
             return response;
         }
 
+        [HttpGet("new")]
+        public ActionResult<ServiceResponse<List<MovieResponse>>> GetMovieListNew()
+        {
+            var response = new ServiceResponse<List<MovieResponse>>();
+            var movieList = service.GetMovieListNew(_mapper);
+            response.Data = movieList;
+            response.Message = "Get Movie List New";
+            response.Status = 200;
+            response.TotalDataList = movieList.Count;
+            return response;
+        }
+
         [HttpGet("id")]
         public ActionResult<ServiceResponse<MovieResponse>> GetMovieById(int id)
         {

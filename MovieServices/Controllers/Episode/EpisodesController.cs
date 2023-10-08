@@ -38,6 +38,24 @@ namespace MovieServices.Controllers.Episode
             return response;
         }
 
+
+        [HttpGet("movieId")]
+        public ActionResult<ServiceResponse<List<EpisodeResponse>>> GetEpisodesByMovieId(int movieId)
+        {
+            var response = new ServiceResponse<List<EpisodeResponse>>();
+            var episodeResponseList = new List<EpisodeResponse>();
+            var episodeList = service.GetEpisodesByMovieId(movieId);
+            foreach (var episode in episodeList)
+            {
+                episodeResponseList.Add(_mapper.Map<EpisodeResponse>(episode));
+            }
+            response.Data = episodeResponseList;
+            response.Message = "Get Episode List";
+            response.Status = 200;
+            response.TotalDataList = episodeResponseList.Count;
+            return response;
+        }
+
         [HttpGet("id")]
         public ActionResult<ServiceResponse<EpisodeResponse>> GetEpisodeById(int id)
         {

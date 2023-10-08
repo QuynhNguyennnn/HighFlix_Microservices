@@ -36,6 +36,36 @@ namespace MovieServices.DAOs
             return movies;
         }
 
+        public static List<MovieResponse> GetMovieListNew(IMapper _mapper)
+        {
+            List<MovieResponse> movies = new List<MovieResponse>();
+            try
+            {
+                using (var context = new HighFlixV2Context())
+                {
+                    var movieList = context.Movies.OrderByDescending(movie => movie.MovieId).Take(10).ToList();
+                    foreach (var movie in movieList)
+                    {
+                        if (movie.IsActive)
+                        {
+                            List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                            MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                            movieCategories.ForEach(movieCategory =>
+                            {
+                                movieResponse.Categories += movieCategory.CategoryId.ToString();
+                            });
+                            movies.Add(movieResponse);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return movies;
+        }
+
         public static MovieResponse GetMovieById(int id , IMapper _mapper)
         {
             Movie movie = new Movie();

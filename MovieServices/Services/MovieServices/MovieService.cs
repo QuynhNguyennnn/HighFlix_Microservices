@@ -12,6 +12,8 @@ namespace MovieServices.Services.MovieServices
 
         public List<MovieResponse> GetMovieList(IMapper _mapper) => MovieDAO.GetMovieList(_mapper);
 
+        public List<MovieResponse> GetMovieListNew(IMapper _mapper) => MovieDAO.GetMovieListNew(_mapper);
+
         public Movie CreateMovie(Movie movie, List<int> cates) => MovieDAO.CreateMovie(movie, cates);
 
         public Movie UpdateMovie(Movie movie, List<int> cates) => MovieDAO.UpdateMovie(movie, cates);
