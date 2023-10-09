@@ -2,6 +2,7 @@
 using AutoMapper;
 using MovieServices.DTOs.EpisodeDTOs.RequestDTO;
 using MovieServices.DTOs.EpisodeDTOs.ResponseDTO;
+using MovieServices.DTOs.MovieDTOs.RequestDto;
 using MovieServices.DTOs.MovieDTOs.ResponseDTO;
 using MovieServices.Models;
 
@@ -22,6 +23,10 @@ namespace ProjectAPI
             CreateMap<AddEpisodeDto, Episode>();
             CreateMap<UpdateEpisodeDto, Episode>();
             CreateMap<DeleteEpisodeDto, Episode>();
+
+            //for statistic
+            CreateMap<StatisticDto, StatisticMovieResponse>();
+            CreateMap<StatisticMovieResponse, StatisticDto>();
         }
     }
 }
