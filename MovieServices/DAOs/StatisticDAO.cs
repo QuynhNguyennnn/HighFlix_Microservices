@@ -4,22 +4,23 @@ namespace MovieServices.DAOs
 {
     public class StatisticDAO
     {
-        public static Statistic StatisticMovieByDate(int movieId, DateTime statisticDate)
+        public static List<Statistic> GetStatiisticByDateToDate(DateTime startDate, DateTime endDate)
         {
-            Statistic movieStatistic = new Statistic();
-
+            List<Statistic> statistics = new List<Statistic>();
             try
             {
                 using (var context = new HighFlixV2Context())
                 {
-                    movieStatistic = context.Statistics.SingleOrDefault(mv => (mv.MovieId == movieId) && (mv.Date == statisticDate));
+                    statistics = context.Statistics.Where(movie => movie.Date >= startDate && movie.Date <= endDate)
+                        .OrderByDescending(movie => movie.View)
+                        .ToList();
                 }
             }
-            catch (Exception ex)
+             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return movieStatistic;
+            return statistics;
         }
     }
 }

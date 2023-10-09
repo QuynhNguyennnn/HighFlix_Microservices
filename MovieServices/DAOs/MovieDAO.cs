@@ -1,12 +1,14 @@
-﻿using MovieServices.Models;
+﻿using AutoMapper;
+using MovieServices.DTOs.MovieDTOs.ResponseDTO;
+using MovieServices.Models;
 
 namespace MovieServices.DAOs
 {
     public class MovieDAO
     {
-        public static List<Movie> GetMovieList()
+        public static List<MovieResponse> GetMovieList(IMapper _mapper)
         {
-            List<Movie> movies = new List<Movie>();
+            List<MovieResponse> movies = new List<MovieResponse>();
             try
             {
                 using (var context = new HighFlixV2Context())
@@ -16,8 +18,13 @@ namespace MovieServices.DAOs
                     {
                         if (movie.IsActive)
                         {
-                            movies.Add(movie);
-
+                            List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                            MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                            movieCategories.ForEach(movieCategory =>
+                            {
+                                movieResponse.Categories += movieCategory.CategoryId.ToString();
+                            });
+                            movies.Add(movieResponse);
                         }
                     }
                 }
@@ -29,21 +36,59 @@ namespace MovieServices.DAOs
             return movies;
         }
 
-        public static Movie GetMovieById(int id)
+        public static List<MovieResponse> GetMovieListNew(IMapper _mapper)
         {
-            Movie movie = new Movie();
+            List<MovieResponse> movies = new List<MovieResponse>();
             try
             {
                 using (var context = new HighFlixV2Context())
                 {
-                    movie = context.Movies.SingleOrDefault(mv => (mv.MovieId == id) && mv.IsActive);
+                    var movieList = context.Movies.OrderByDescending(movie => movie.MovieId).Take(10).ToList();
+                    foreach (var movie in movieList)
+                    {
+                        if (movie.IsActive)
+                        {
+                            List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                            MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                            movieCategories.ForEach(movieCategory =>
+                            {
+                                movieResponse.Categories += movieCategory.CategoryId.ToString();
+                            });
+                            movies.Add(movieResponse);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return movie;
+            return movies;
+        }
+
+        public static MovieResponse GetMovieById(int id , IMapper _mapper)
+        {
+            Movie movie = new Movie();
+            MovieResponse movieResponse = new MovieResponse();
+            try
+            {
+                using (var context = new HighFlixV2Context())
+                {
+                    movie = context.Movies.SingleOrDefault(mv => (mv.MovieId == id) && mv.IsActive);
+                    movie.Description = movie.Description.Substring(2, movie.Description.Length - 3);
+                    List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                    movieResponse = _mapper.Map<MovieResponse>(movie);
+                    movieCategories.ForEach(movieCategory =>
+                    {
+                        movieResponse.Categories += movieCategory.CategoryId.ToString();
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return movieResponse;
         }
 
         public static Movie CreateMovie(Movie movie, List<int> cates)
@@ -53,10 +98,6 @@ namespace MovieServices.DAOs
                 using (var context = new HighFlixV2Context())
                 {
                     movie.IsActive = true;
-                    movie.ViewByDate = 0;
-                    movie.ViewByWeek = 0;
-                    movie.ViewByMonth = 0;
-                    movie.ViewByYear = 0;
 
                     context.Movies.Add(movie);
                     context.SaveChanges();
@@ -81,10 +122,6 @@ namespace MovieServices.DAOs
                     if (_movie != null)
                     {
                         movie.IsActive = _movie.IsActive;
-                        movie.ViewByDate = _movie.ViewByDate;
-                        movie.ViewByWeek = _movie.ViewByWeek;
-                        movie.ViewByMonth = _movie.ViewByMonth;
-                        movie.ViewByYear = _movie.ViewByYear;
 
                         // Sử dụng SetValues để cập nhật giá trị từ movie vào _movie
                         context.Entry(_movie).CurrentValues.SetValues(movie);

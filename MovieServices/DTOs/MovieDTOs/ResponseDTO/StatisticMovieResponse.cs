@@ -4,7 +4,7 @@
     {
         public string MovieName { get; set; } = null!;
 
-        public string Categories { get; set; } = null!;
+        //public string Categories { get; set; } = null!;
 
         public string MovieThumnailImage { get; set; } = null!;
         public string ReleasedYear { get; set; } = null!;
