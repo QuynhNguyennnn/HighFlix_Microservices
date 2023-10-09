@@ -15,8 +15,6 @@ public partial class Movie
 
     public string MoviePoster { get; set; } = null!;
 
-    public string? ListEpisode { get; set; }
-
     public int? TotalEpisodes { get; set; }
 
     public string Description { get; set; } = null!;
@@ -39,9 +37,9 @@ public partial class Movie
 
     public virtual ICollection<Episode> Episodes { get; set; } = new List<Episode>();
 
-    public virtual ICollection<MovieCategory> MovieCategories { get; set; } = new List<MovieCategory>();
-
     public virtual User PostedByUserNavigation { get; set; } = null!;
 
     public virtual ICollection<Statistic> Statistics { get; set; } = new List<Statistic>();
+
+    public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
 }

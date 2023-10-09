@@ -1,14 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
-namespace CategoryServices.Models;
+namespace AuthenticationServices.Models;
 
-public partial class HighFlixV2Context : DbContext
+public partial class HighFlixContext : DbContext
 {
-    public HighFlixV2Context()
+    public HighFlixContext()
     {
     }
 
-    public HighFlixV2Context(DbContextOptions<HighFlixV2Context> options)
+    public HighFlixContext(DbContextOptions<HighFlixContext> options)
         : base(options)
     {
     }
@@ -21,8 +23,6 @@ public partial class HighFlixV2Context : DbContext
 
     public virtual DbSet<Movie> Movies { get; set; }
 
-    public virtual DbSet<MovieCategory> MovieCategories { get; set; }
-
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<Statistic> Statistics { get; set; }
@@ -31,14 +31,12 @@ public partial class HighFlixV2Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=DESKTOP-Q8AE83H; database = HighFlix;uid=sa;pwd=123456;TrustServerCertificate=true;");
+        => optionsBuilder.UseSqlServer("server=LAPOFQUYNH; database = HighFlix;uid=sa;pwd=123456;TrustServerCertificate=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Category__19093A0BDEDE5B82");
-
             entity.ToTable("Category");
 
             entity.Property(e => e.CategoryName).HasMaxLength(50);
@@ -46,8 +44,6 @@ public partial class HighFlixV2Context : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.CommentId).HasName("PK__Comment__C3B4DFCABFDA85DA");
-
             entity.ToTable("Comment");
 
             entity.Property(e => e.CommentedDate).HasColumnType("datetime");
@@ -65,14 +61,9 @@ public partial class HighFlixV2Context : DbContext
 
         modelBuilder.Entity<Episode>(entity =>
         {
-            entity.HasKey(e => e.EpisodeId).HasName("PK__Episode__AC6609F583FC66BD");
-
             entity.ToTable("Episode");
 
             entity.Property(e => e.EpisodeName).HasMaxLength(50);
-            entity.Property(e => e.MediaLink)
-                .HasMaxLength(255)
-                .IsUnicode(false);
 
             entity.HasOne(d => d.Movie).WithMany(p => p.Episodes)
                 .HasForeignKey(d => d.MovieId)
@@ -82,7 +73,7 @@ public partial class HighFlixV2Context : DbContext
 
         modelBuilder.Entity<Movie>(entity =>
         {
-            entity.HasKey(e => e.MovieId).HasName("PK__Movie__4BD2941AB311DD2F");
+            entity.HasKey(e => e.MovieId).HasName("PK__Movie__4BD2941AB05F5D51");
 
             entity.ToTable("Movie");
 
@@ -93,28 +84,28 @@ public partial class HighFlixV2Context : DbContext
                 .HasForeignKey(d => d.PostedByUser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Movie_User");
-        });
 
-        modelBuilder.Entity<MovieCategory>(entity =>
-        {
-            entity.HasKey(e => new { e.MovieId, e.CategoryId }).HasName("PK__MovieCat__EA4207BADC8A8793");
-
-            entity.ToTable("MovieCategory");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.MovieCategories)
-                .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieCategories_Category");
-
-            entity.HasOne(d => d.Movie).WithMany(p => p.MovieCategories)
-                .HasForeignKey(d => d.MovieId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MovieCategories_Movie");
+            entity.HasMany(d => d.Categories).WithMany(p => p.Movies)
+                .UsingEntity<Dictionary<string, object>>(
+                    "MovieCategory",
+                    r => r.HasOne<Category>().WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_MovieCategory_Category"),
+                    l => l.HasOne<Movie>().WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_MovieCategory_Movie"),
+                    j =>
+                    {
+                        j.HasKey("MovieId", "CategoryId").HasName("PK__MovieCat__EA4207BA80EF5765");
+                        j.ToTable("MovieCategory");
+                    });
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE1A471ABB6D");
+            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE1AA0DF757E");
 
             entity.ToTable("Role");
 
@@ -136,7 +127,7 @@ public partial class HighFlixV2Context : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C317106C8");
+            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C643039B8");
 
             entity.ToTable("User");
 

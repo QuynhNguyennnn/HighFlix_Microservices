@@ -33,7 +33,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     if (cates != null)
                     {
@@ -60,7 +60,7 @@ namespace MovieServices.DAOs
 
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     movieCategories = context.MovieCategories.Where(mc => mc.MovieId == movieId).ToList();
                     foreach (MovieCategory cate in movieCategories)
