@@ -34,7 +34,7 @@ namespace MovieServices.Controllers.Statistic
             if (statisticResponses == null)
             {
                 response.Data = null;
-                response.Message = "Id not found";
+                response.Message = "No movie is seen during this time.";
                 response.Status = 400;
             }
             else
