@@ -5,6 +5,6 @@ namespace MovieServices.Services.StatisticServices
 {
     public class StatisticService : IStatisticService
     {
-        public List<Statistic> StatisticMovieByDate(int movieId,  DateTime statisticDate) => StatisticDAO.StatisticMovieByDate(movieId, statisticDate);
+        public List<Statistic> GetStatisticByDateToDate(DateTime startDate, DateTime endDate) => StatisticDAO.GetStatiisticByDateToDate(startDate, endDate);
     }
 }
