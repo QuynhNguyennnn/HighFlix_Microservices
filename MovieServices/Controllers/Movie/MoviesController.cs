@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieServices.DTOs.MovieDTOs.ResponseDTO;
 using MovieServices.Services.MovieServices;
 using MovieServices.Models;
+using MovieServices.DAOs;
 
 namespace MovieServices.Controllers.Movie
 {
@@ -29,8 +30,15 @@ namespace MovieServices.Controllers.Movie
             var movieList = service.GetMovieList();
             foreach (var movie in movieList)
             {
-                movieResponseList.Add(_mapper.Map<MovieResponse>(movie));
+                List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                movieCategories.ForEach(movieCategory =>
+                {
+                    movieResponse.Categories += movieCategory.CategoryId.ToString();
+                });
+                movieResponseList.Add(movieResponse);
             }
+
             response.Data = movieResponseList;
             response.Message = "Get Movie List";
             response.Status = 200;
@@ -39,19 +47,40 @@ namespace MovieServices.Controllers.Movie
         }
 
         [HttpGet("id")]
-        public ActionResult<MovieResponse> GetMovieById(int id)
+        public ActionResult<ServiceResponse<MovieResponse>> GetMovieById(int id)
         {
             var movie = service.GetMovieById(id);
             var movieResponse = _mapper.Map<MovieResponse>(movie);
-            return movieResponse;
+            List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+            movieCategories.ForEach(movieCategory =>
+            {
+                movieResponse.Categories += movieCategory.CategoryId.ToString();
+            });
+            var response = new ServiceResponse<MovieResponse>();
+            response.Data = movieResponse;
+            response.Message = "Get Movie Detail";
+            response.Status = 200;
+            response.TotalDataList = 1;
+            return response;
         }
 
         [HttpGet("new")]
         public ActionResult<ServiceResponse<List<MovieResponse>>> GetMovieListNew()
         {
             var response = new ServiceResponse<List<MovieResponse>>();
-            var movieList = service.GetMovieListNew(_mapper);
-            response.Data = movieList;
+            var movieResponseList = new List<MovieResponse>();
+            var movieList = service.GetMovieListNew();
+            foreach (var movie in movieList)
+            {
+                List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                movieCategories.ForEach(movieCategory =>
+                {
+                    movieResponse.Categories += movieCategory.CategoryId.ToString();
+                });
+                movieResponseList.Add(movieResponse);
+            }
+            response.Data = movieResponseList;
             response.Message = "Get Movie List New";
             response.Status = 200;
             response.TotalDataList = movieList.Count;
