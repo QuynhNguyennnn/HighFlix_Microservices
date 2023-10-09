@@ -6,9 +6,9 @@ namespace MovieServices.DAOs
 {
     public class MovieDAO
     {
-        public static List<MovieResponse> GetMovieList(IMapper _mapper)
+        public static List<Movie> GetMovieList()
         {
-            List<MovieResponse> movies = new List<MovieResponse>();
+            List<Movie> movies = new List<Movie>();
             try
             {
                 using (var context = new HighFlixV2Context())
@@ -18,13 +18,8 @@ namespace MovieServices.DAOs
                     {
                         if (movie.IsActive)
                         {
-                            List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
-                            MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
-                            movieCategories.ForEach(movieCategory =>
-                            {
-                                movieResponse.Categories += movieCategory.CategoryId.ToString();
-                            });
-                            movies.Add(movieResponse);
+                            movies.Add(movie);
+
                         }
                     }
                 }
@@ -34,6 +29,23 @@ namespace MovieServices.DAOs
                 throw new Exception(ex.Message);
             }
             return movies;
+        }
+
+        public static Movie GetMovieById(int id)
+        {
+            Movie movie = new Movie();
+            try
+            {
+                using (var context = new HighFlixV2Context())
+                {
+                    movie = context.Movies.SingleOrDefault(mv => (mv.MovieId == id) && mv.IsActive);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return movie;
         }
 
         public static List<MovieResponse> GetMovieListNew(IMapper _mapper)
@@ -64,31 +76,6 @@ namespace MovieServices.DAOs
                 throw new Exception(ex.Message);
             }
             return movies;
-        }
-
-        public static MovieResponse GetMovieById(int id , IMapper _mapper)
-        {
-            Movie movie = new Movie();
-            MovieResponse movieResponse = new MovieResponse();
-            try
-            {
-                using (var context = new HighFlixV2Context())
-                {
-                    movie = context.Movies.SingleOrDefault(mv => (mv.MovieId == id) && mv.IsActive);
-                    movie.Description = movie.Description.Substring(2, movie.Description.Length - 3);
-                    List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
-                    movieResponse = _mapper.Map<MovieResponse>(movie);
-                    movieCategories.ForEach(movieCategory =>
-                    {
-                        movieResponse.Categories += movieCategory.CategoryId.ToString();
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return movieResponse;
         }
 
         public static Movie CreateMovie(Movie movie, List<int> cates)

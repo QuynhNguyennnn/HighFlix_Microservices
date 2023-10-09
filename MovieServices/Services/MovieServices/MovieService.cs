@@ -8,11 +8,11 @@ namespace MovieServices.Services.MovieServices
 {
     public class MovieService : IMovieService
     {
-        public MovieResponse GetMovieById(int id, IMapper _mapper) => MovieDAO.GetMovieById(id, _mapper);
+        public Movie GetMovieById(int id) => MovieDAO.GetMovieById(id);
 
-        public List<MovieResponse> GetMovieList(IMapper _mapper) => MovieDAO.GetMovieList(_mapper);
+        public List<Movie> GetMovieList() => MovieDAO.GetMovieList();
 
-        public List<MovieResponse> GetMovieListNew(IMapper _mapper) => MovieDAO.GetMovieListNew(_mapper);
+        public List<Movie> GetMovieListNew() => MovieDAO.GetMovieListNew();
 
         public Movie CreateMovie(Movie movie, List<int> cates) => MovieDAO.CreateMovie(movie, cates);
 
