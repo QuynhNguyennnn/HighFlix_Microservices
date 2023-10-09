@@ -71,24 +71,39 @@ namespace MovieServices.Controllers.Episode
 
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
-        public ActionResult<Models.Episode> CreateMovie(AddEpisodeDto addEpisodeDto)
+        public ActionResult<ServiceResponse<EpisodeResponse>> CreateMovie(AddEpisodeDto addEpisodeDto)
         {
             Models.Episode episode = _mapper.Map<Models.Episode>(addEpisodeDto);
-            return service.CreateEpisode(episode);
+            var episodeResponse = _mapper.Map<EpisodeResponse>(service.CreateEpisode(episode));
+            var response = new ServiceResponse<EpisodeResponse>();
+            response.Data = episodeResponse;
+            response.Status=200;
+            response.Message = "Create Episode";
+            return response;
         }
         [Authorize(Roles = "Admin")]
         [HttpPut("Update")]
-        public ActionResult<Models.Episode> UpdateEpisode(UpdateEpisodeDto updateEpisodeDto)
+        public ActionResult<ServiceResponse<EpisodeResponse>> UpdateEpisode(UpdateEpisodeDto updateEpisodeDto)
         {
             Models.Episode episode = _mapper.Map<Models.Episode>(updateEpisodeDto);
-            return service.UpdateEpisode(episode);
+            var episodeResponse = _mapper.Map<EpisodeResponse>(service.UpdateEpisode(episode));
+            var response = new ServiceResponse<EpisodeResponse>();
+            response.Data = episodeResponse;
+            response.Status = 200;
+            response.Message = "Update Episode";
+            return response;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
-        public ActionResult<Models.Episode> DeleteEpisode(int id)
+        public ActionResult<ServiceResponse<EpisodeResponse>> DeleteEpisode(int id)
         {
-            return service.DeleteEpisode(id);
+            var episodeResponse = _mapper.Map<EpisodeResponse>(service.DeleteEpisode(id));
+            var response = new ServiceResponse<EpisodeResponse>();
+            response.Data = episodeResponse;
+            response.Status = 200;
+            response.Message = "Delete Episode";
+            return response;
         }
     }
 }
