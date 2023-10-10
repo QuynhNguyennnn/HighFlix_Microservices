@@ -9,8 +9,6 @@ public partial class MovieCategory
 
     public int CategoryId { get; set; }
 
-    public string? SubCategories { get; set; }
-
     public virtual Category Category { get; set; } = null!;
 
     public virtual Movie Movie { get; set; } = null!;

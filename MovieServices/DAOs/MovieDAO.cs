@@ -1,4 +1,4 @@
-﻿using MovieServices.Models;
+﻿/*using MovieServices.Models;
 
 namespace MovieServices.DAOs
 {
@@ -9,7 +9,7 @@ namespace MovieServices.DAOs
             List<Movie> movies = new List<Movie>();
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     var movieList = context.Movies.ToList();
                     foreach (var movie in movieList)
@@ -34,7 +34,7 @@ namespace MovieServices.DAOs
             Movie movie = new Movie();
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     movie = context.Movies.SingleOrDefault(mv => (mv.MovieId == id) && mv.IsActive);
                     movie.Description = movie.Description.Substring(2, movie.Description.Length - 3);
@@ -51,7 +51,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     movie.IsActive = true;
 
@@ -72,7 +72,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     var _movie = context.Movies.SingleOrDefault(m => m.MovieId == movie.MovieId && m.IsActive);
                     if (_movie != null)
@@ -102,7 +102,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     var _movie = context.Movies.SingleOrDefault(m => m.MovieId == id && m.IsActive);
                     if (_movie != null)
@@ -130,7 +130,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     return context.Movies
                         .Where(movie =>
@@ -148,3 +148,4 @@ namespace MovieServices.DAOs
         }
     }
 }
+*/

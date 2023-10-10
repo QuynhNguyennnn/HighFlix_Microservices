@@ -9,7 +9,7 @@ namespace AuthenticationServices.DAOs
             Role role = new Role();
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     role = context.Roles.FirstOrDefault(role => role.RoleId == roleId);
                     if (role != null)
