@@ -1,5 +1,6 @@
 ﻿using APIS.DTOs.AuthenticationDTOs.ResponseDto;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieServices.DTOs.MovieDTOs.RequestDto;
@@ -24,6 +25,7 @@ namespace MovieServices.Controllers.Statistic
         }
 
         [HttpGet("{startDate}/{endDate}")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<ServiceResponse<List<StatisticMovieResponse>>> GetStatisticByDate(DateTime startDate, DateTime endDate)
         {
             ServiceResponse<List<StatisticMovieResponse>> response = new ServiceResponse<List<StatisticMovieResponse>>();
