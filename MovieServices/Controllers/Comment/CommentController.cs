@@ -55,6 +55,7 @@ namespace MovieServices.Controllers.Comment
             return response;
         }
         [HttpPut("Update")]
+        [Authorize(Roles = "User")]
         public ActionResult<ServiceResponse<CommentReponse>> UpdateComment(UpdateCommentDto updateCommentDto)
         {
             var commentResponse = _mapper.Map<CommentReponse>(service.UpdateComment(_mapper.Map<Models.Comment>(updateCommentDto)));
