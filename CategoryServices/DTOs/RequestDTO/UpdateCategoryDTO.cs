@@ -2,8 +2,10 @@
 
 namespace CategoryServices.DTOs.RequestDTO
 {
-    public class AddCategoryDTO
+    public class UpdateCategoryDTO
     {
+        [Required]
+        public int CategoryId { get; set; }
         [Required]
         public string CategoryName { get; set; }
     }

@@ -2,6 +2,8 @@
 {
     public class MovieResponse
     {
+        public int MovieId { get; set; }
+
         public string MovieName { get; set; } = null!;
 
         public string Categories { get; set; } = null!;
@@ -24,7 +26,7 @@
 
         public string? MainCharacters { get; set; }
 
-        public byte[]? Trailer { get; set; }
+        public string? Trailer { get; set; }
 
         public string? Comments { get; set; }
     }
