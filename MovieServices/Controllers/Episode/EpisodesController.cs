@@ -77,10 +77,11 @@ namespace MovieServices.Controllers.Episode
             var episodeResponse = _mapper.Map<EpisodeResponse>(service.CreateEpisode(episode));
             var response = new ServiceResponse<EpisodeResponse>();
             response.Data = episodeResponse;
-            response.Status=200;
+            response.Status = 200;
             response.Message = "Create Episode";
             return response;
         }
+
         [Authorize(Roles = "Admin")]
         [HttpPut("Update")]
         public ActionResult<ServiceResponse<EpisodeResponse>> UpdateEpisode(UpdateEpisodeDto updateEpisodeDto)
