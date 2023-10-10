@@ -180,7 +180,6 @@ namespace MovieServices.DAOs
                         .Where(movie =>
                             movie.IsActive &&
                             (movie.MovieName.Contains(searchTerm)
-                            // || movie.Categories.Contains(searchTerm) 
                             ))
                         .ToList();
                 }

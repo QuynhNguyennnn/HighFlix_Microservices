@@ -26,10 +26,11 @@ namespace MovieServices.Controllers.Statistic
         [HttpGet("{startDate}/{endDate}")]
         public ActionResult<ServiceResponse<List<StatisticMovieResponse>>> GetStatisticByDate(DateTime startDate, DateTime endDate)
         {
+            /*
             ServiceResponse<List<StatisticMovieResponse>> response = new ServiceResponse<List<StatisticMovieResponse>>();
             List<StatisticMovieResponse> statisticMovieResponses = new List<StatisticMovieResponse>();
             List<StatisticMovieResponse> statisticMovieResponsesFinal = new List<StatisticMovieResponse>();
-            List<Models.Movie> movieList = movieService.GetMovieList();
+           List<Models.Movie> movieList = movieService.GetMovieList();
             var statisticResponses = statisticService.GetStatisticByDateToDate(startDate, endDate);
             if (statisticResponses == null)
             {
@@ -42,7 +43,7 @@ namespace MovieServices.Controllers.Statistic
                 foreach (var item in statisticResponses)
                 {
                     StatisticMovieResponse statisticMovieResponse = new StatisticMovieResponse();
-                    var movie = movieService.GetMovieById(item.MovieId);
+                   var movie = movieService.GetMovieById(item.MovieId);
                     if (movie == null)
                     {
                         continue;
@@ -86,8 +87,8 @@ namespace MovieServices.Controllers.Statistic
                 response.Message = "Statistic success";
                 response.TotalDataList = statisticMovieResponsesFinal.Count;
                 response.Status = 200;
-            }
-            return response;
+            }*/
+            return null;
         }
     }
 }

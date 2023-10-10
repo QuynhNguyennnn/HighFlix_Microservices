@@ -48,9 +48,9 @@ namespace MovieServices.Controllers.Movie
         [HttpGet("id")]
         public ActionResult<ServiceResponse<MovieResponse>> GetMovieById(int id)
         {
-            var movie = service.GetMovieById(id, _mapper);
+            //var movie = service.GetMovieById(id, _mapper);
             var response = new ServiceResponse<MovieResponse>();
-            response.Data = movie;
+            //response.Data = movie;
             response.Message = "Get Movie";
             response.Status = 200;
             return response;

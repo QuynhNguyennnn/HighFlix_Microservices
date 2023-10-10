@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using APIS.DTOs.AuthenticationDTOs.ResponseDto;
 using APIS.DTOs.CommentDTOs.ResponseDto;
 using MovieServices.DTOs.CommentDTOs.RequestDto;
+using MovieServices.DTOs.EpisodeDTOs.ResponseDTO;
 
 namespace MovieServices.Controllers.Comment
 {
@@ -43,7 +44,7 @@ namespace MovieServices.Controllers.Comment
 
         [HttpPost("Create")]
        // [Authorize(Roles = "Admin")]
-        public ActionResult<Models.Comment> CreateComment(CreateCommentDto createCommentDto)
+        public ActionResult<ServiceResponse<CommentReponse>> CreateComment(CreateCommentDto createCommentDto)
         {
             /*User member = new User();
             var username = User?.Identity?.Name;
@@ -58,23 +59,35 @@ namespace MovieServices.Controllers.Comment
    
                 createCommentDto.UserId = userInfor.UserId;
             */
-           
-            
             Models.Comment comment = _mapper.Map<Models.Comment>(createCommentDto);
-            return service.CreateComment(comment);
+            var commentResponse = _mapper.Map<CommentReponse>(service.CreateComment(comment));
+            var response = new ServiceResponse<CommentReponse>();
+            response.Data = commentResponse;
+            response.Status = 200;
+            response.Message = "Create Comment";
+            return response;
         }
         [HttpPut("Update")]
-        public ActionResult<Models.Comment> UpdateComment(UpdateCommentDto updateCommentDto)
+        public ActionResult<ServiceResponse<CommentReponse>> UpdateComment(UpdateCommentDto updateCommentDto)
         {
-            Models.Comment comment = _mapper.Map<Models.Comment>(updateCommentDto);
-            return service.UpdateComment(comment);
+            var commentResponse = _mapper.Map<CommentReponse>(service.UpdateComment(_mapper.Map<Models.Comment>(updateCommentDto)));
+            var response = new ServiceResponse<CommentReponse>();
+            response.Data = commentResponse;
+            response.Status = 200;
+            response.Message = "Update Comment";
+            return response;
         }
 
         // [Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
-        public ActionResult<Models.Comment> DeleteComment(int id)
+        public ActionResult<ServiceResponse<CommentReponse>> DeleteComment(int id)
         {
-            return service.DeleteComment(id);
+            var commentResponse = _mapper.Map<CommentReponse>(service.DeleteComment(id));
+            var response = new ServiceResponse<CommentReponse>();
+            response.Data = commentResponse;
+            response.Status = 200;
+            response.Message = "Delete Comment";
+            return response;
         }
     }
 }
