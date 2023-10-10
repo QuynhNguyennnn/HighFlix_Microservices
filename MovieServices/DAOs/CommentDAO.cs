@@ -9,7 +9,7 @@ namespace MovieServices.DAOs
             List<Comment> comments = new List<Comment>();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var commentList = context.Comments.ToList();
                     foreach (var comment in commentList)
@@ -30,18 +30,39 @@ namespace MovieServices.DAOs
         }
         public static Comment CreateComment(Comment comment)
         {
-
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
+                    // Check if the user has already submitted a comment for the same movie
+                    var existingComment = context.Comments
+                        .FirstOrDefault(c => c.UserId == comment.UserId && c.MovieId == comment.MovieId);
+
+                    if (existingComment != null)
+                    {
+                        // Update the existing comment and rating
+                        existingComment.CommentContent = comment.CommentContent;
+                        existingComment.Rating = comment.Rating;
+                        existingComment.CommentedDate = DateTime.Now;
+
+                        context.SaveChanges();
+                        return existingComment;
+                    }
+
+                    // If no existing comment, create a new one
                     comment.IsActive = true;
                     comment.CommentedDate = DateTime.Now;
-                    comment.MovieId = 2;
-                    comment.UserId = 1;
-                    context.Comments.Add(comment);
-                    context.SaveChanges();
-                    return comment;
+
+                    if (comment.Rating > 0 && comment.Rating <= 5)
+                    {
+                        context.Comments.Add(comment);
+                        context.SaveChanges();
+                        return comment;
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Rating must be greater than 0 and less than or equal to 5.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -50,11 +71,13 @@ namespace MovieServices.DAOs
             }
         }
 
+
+
         public static Comment UpdateComment(Comment comment)
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var _comment = context.Comments.SingleOrDefault(c => c.CommentId == comment.CommentId);
                     if (_comment != null)
@@ -78,7 +101,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var _comment = context.Comments.SingleOrDefault(c => c.CommentId == commentId);
                     if (_comment != null)

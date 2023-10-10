@@ -72,7 +72,7 @@ namespace MovieServices.DAOs
             MovieResponse movieResponse = new MovieResponse();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     movie = context.Movies.SingleOrDefault(mv => (mv.MovieId == id) && mv.IsActive);
                     movie.Description = movie.Description.Substring(2, movie.Description.Length - 3);

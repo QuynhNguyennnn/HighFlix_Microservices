@@ -34,7 +34,7 @@ namespace MovieServices.DAOs
             List<Episode> episodes = new List<Episode>();
             try
             {
-                using(var context = new HighFlixV2Context())
+                using(var context = new HighFlixV4Context())
                 {
                     var episodeList = context.Episodes.Where(e => e.MovieId == movieId);
                     foreach (var episode in episodeList)

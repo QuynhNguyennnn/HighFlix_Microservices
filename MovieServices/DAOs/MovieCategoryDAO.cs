@@ -33,7 +33,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var listCate = context.MovieCategories.Where(mc => mc.MovieId == movieId).ToList();
                     return listCate;
@@ -44,7 +44,7 @@ namespace MovieServices.DAOs
             }
         }
 
-        public static void CreateMovieCategory(List<int> cates, int movieId)
+        /*public static void CreateMovieCategory(List<int> cates, int movieId)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace MovieServices.DAOs
             {
                 throw new Exception(ex.Message);
             }
-        }
+        }*/
 
         public static void UpdateMovieCategory(List<int> cates, int movieId)
         {
