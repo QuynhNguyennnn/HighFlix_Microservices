@@ -1,4 +1,6 @@
-﻿using MovieServices.Models;
+﻿using AutoMapper;
+using MovieServices.DTOs.MovieDTOs.ResponseDTO;
+using MovieServices.Models;
 
 namespace MovieServices.DAOs
 {
@@ -37,7 +39,6 @@ namespace MovieServices.DAOs
                 using (var context = new HighFlixV4Context())
                 {
                     movie = context.Movies.SingleOrDefault(mv => (mv.MovieId == id) && mv.IsActive);
-                    movie.Description = movie.Description.Substring(2, movie.Description.Length - 3);
                 }
             }
             catch (Exception ex)
@@ -45,6 +46,30 @@ namespace MovieServices.DAOs
                 throw new Exception(ex.Message);
             }
             return movie;
+        }
+
+        public static List<Movie> GetMovieListNew()
+        {
+            List<Movie> movies = new List<Movie>();
+            try
+            {
+                using (var context = new HighFlixV4Context())
+                {
+                    var movieList = context.Movies.OrderByDescending(movie => movie.MovieId).Take(10).ToList();
+                    foreach (var movie in movieList)
+                    {
+                        if (movie.IsActive)
+                        {
+                            movies.Add(movie);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return movies;
         }
 
         public static Movie CreateMovie(Movie movie, List<int> cates)
@@ -78,6 +103,7 @@ namespace MovieServices.DAOs
                     if (_movie != null)
                     {
                         movie.IsActive = _movie.IsActive;
+                        movie.PostedByUser = _movie.PostedByUser;
 
                         // Sử dụng SetValues để cập nhật giá trị từ movie vào _movie
                         context.Entry(_movie).CurrentValues.SetValues(movie);
@@ -136,7 +162,6 @@ namespace MovieServices.DAOs
                         .Where(movie =>
                             movie.IsActive &&
                             (movie.MovieName.Contains(searchTerm)
-                            // || movie.Categories.Contains(searchTerm) 
                             ))
                         .ToList();
                 }

@@ -29,6 +29,22 @@ namespace CategoryServices.DAOs
             return categories;
         }
 
+        public static Category GetCategoryById(int id)
+        {
+            Category category = new Category();
+            try
+            {
+                using (var context = new HighFlixV4Context())
+                {
+                    category = context.Categories.SingleOrDefault(c => c.CategoryId == id);
+                }
+            } catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return category;
+        }
+
         public static Category CreateCategory(Category category)
         {
             try

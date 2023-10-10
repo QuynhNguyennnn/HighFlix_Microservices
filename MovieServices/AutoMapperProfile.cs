@@ -1,5 +1,7 @@
-﻿using APIS.DTOs.MovieDTOs.RequestDto;
+﻿using APIS.DTOs.CommentDTOs.ResponseDto;
+using APIS.DTOs.MovieDTOs.RequestDto;
 using AutoMapper;
+using MovieServices.DTOs.CommentDTOs.RequestDto;
 using MovieServices.DTOs.EpisodeDTOs.RequestDTO;
 using MovieServices.DTOs.EpisodeDTOs.ResponseDTO;
 using MovieServices.DTOs.MovieDTOs.RequestDto;
@@ -27,6 +29,13 @@ namespace ProjectAPI
             //for statistic
             CreateMap<StatisticDto, StatisticMovieResponse>();
             CreateMap<StatisticMovieResponse, StatisticDto>();
+
+            //for comment
+            CreateMap<CreateCommentDto, Comment>();
+            CreateMap<CommentReponse, Comment>();
+            CreateMap<Comment, CommentReponse>();
+            CreateMap<UpdateCommentDto, Comment>();
+            CreateMap<DeleteCommentDto, Comment>();
         }
     }
 }

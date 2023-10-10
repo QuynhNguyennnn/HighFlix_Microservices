@@ -1,5 +1,7 @@
 ﻿
+using AutoMapper;
 using MovieServices.DAOs;
+using MovieServices.DTOs.MovieDTOs.ResponseDTO;
 using MovieServices.Models;
 
 namespace MovieServices.Services.MovieServices
@@ -9,6 +11,8 @@ namespace MovieServices.Services.MovieServices
         public Movie GetMovieById(int id) => MovieDAO.GetMovieById(id);
 
         public List<Movie> GetMovieList() => MovieDAO.GetMovieList();
+
+        public List<Movie> GetMovieListNew() => MovieDAO.GetMovieListNew();
 
         public Movie CreateMovie(Movie movie, List<int> cates) => MovieDAO.CreateMovie(movie, cates);
 

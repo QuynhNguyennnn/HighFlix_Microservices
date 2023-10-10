@@ -29,6 +29,31 @@ namespace MovieServices.DAOs
             return episodes;
         }
 
+        public static List<Episode> GetEpisodesByMovieId(int movieId)
+        {
+            List<Episode> episodes = new List<Episode>();
+            try
+            {
+                using(var context = new HighFlixV4Context())
+                {
+                    var episodeList = context.Episodes.Where(e => e.MovieId == movieId);
+                    foreach (var episode in episodeList)
+                    {
+                        if (episode.IsActive)
+                        {
+                            episodes.Add(episode);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return episodes;
+        }
+
         // Retrieve an episode by ID
         public static Episode GetEpisodeById(int episodeId)
         {

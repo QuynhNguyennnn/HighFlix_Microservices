@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MovieServices.Models;
 
+[PrimaryKey(nameof(MovieId), nameof(CategoryId))]
 public partial class MovieCategory
 {
     public int MovieId { get; set; }

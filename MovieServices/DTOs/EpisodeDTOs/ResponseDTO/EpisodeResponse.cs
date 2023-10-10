@@ -2,6 +2,8 @@
 {
     public class EpisodeResponse
     {
+        public int EpisodeId { get; set; }
+
         public int MovieId { get; set; }
 
         public string EpisodeName { get; set; } = null!;
