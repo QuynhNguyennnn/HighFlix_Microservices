@@ -15,17 +15,7 @@ namespace MovieServices.Services.MovieServices
         public Movie UpdateMovie(Movie movie, List<int> cates) => MovieDAO.UpdateMovie(movie, cates);
 
         public Movie DeleteMovie(int id) => MovieDAO.DeleteMovie(id);
-        public List<Movie> SearchMovies(string searchMovieName)
-        {
-            using (var context = new HighFlixV2Context())
-            {
-                return context.Movies
-                    .Where(movie =>
-                        movie.IsActive &&
-                        movie.MovieName.Contains(searchMovieName))
-                    .ToList();
-            }
-        }
+        public List<Movie> SearchMovies(string searchMovieName) => MovieDAO.SearchMovies(searchMovieName);
 
     }
 }

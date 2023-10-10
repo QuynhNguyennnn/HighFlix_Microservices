@@ -1,4 +1,4 @@
-﻿/*using MovieServices.Models;
+﻿using MovieServices.Models;
 
 namespace MovieServices.DAOs
 {
@@ -88,4 +88,4 @@ namespace MovieServices.DAOs
             }
         }
     }
-}*/
+}
