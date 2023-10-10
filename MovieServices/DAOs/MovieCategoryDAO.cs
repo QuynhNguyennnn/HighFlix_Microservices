@@ -4,11 +4,11 @@ namespace MovieServices.DAOs
 {
     public class MovieCategoryDAO
     {
-        /*public static void CreateMovieCategory(List<int> cates, int movieId)
+        public static void CreateMovieCategory(List<int> cates, int movieId)
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     if (cates != null)
                     {
@@ -27,7 +27,7 @@ namespace MovieServices.DAOs
             {
                 throw new Exception(ex.Message);
             }
-        }*/
+        }
 
         public static List<MovieCategory> GetCategoryByMovieId(int movieId)
         {
@@ -48,7 +48,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     if (cates != null)
                     {
@@ -75,7 +75,7 @@ namespace MovieServices.DAOs
 
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     movieCategories = context.MovieCategories.Where(mc => mc.MovieId == movieId).ToList();
                     foreach (MovieCategory cate in movieCategories)

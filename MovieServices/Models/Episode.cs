@@ -13,7 +13,7 @@ public partial class Episode
 
     public string Description { get; set; } = null!;
 
-    public byte[]? MediaContent { get; set; }
+    public string? MediaContent { get; set; }
 
     public bool IsActive { get; set; }
 

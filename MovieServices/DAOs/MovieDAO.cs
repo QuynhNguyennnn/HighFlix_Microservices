@@ -11,7 +11,7 @@ namespace MovieServices.DAOs
             List<MovieResponse> movies = new List<MovieResponse>();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var movieList = context.Movies.ToList();
                     foreach (var movie in movieList)
@@ -41,7 +41,7 @@ namespace MovieServices.DAOs
             List<MovieResponse> movies = new List<MovieResponse>();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var movieList = context.Movies.OrderByDescending(movie => movie.MovieId).Take(10).ToList();
                     foreach (var movie in movieList)
@@ -95,7 +95,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     movie.IsActive = true;
 
@@ -116,7 +116,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var _movie = context.Movies.SingleOrDefault(m => m.MovieId == movie.MovieId && m.IsActive);
                     if (_movie != null)
@@ -146,7 +146,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var _movie = context.Movies.SingleOrDefault(m => m.MovieId == id && m.IsActive);
                     if (_movie != null)
@@ -174,7 +174,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     return context.Movies
                         .Where(movie =>

@@ -9,7 +9,7 @@ namespace MovieServices.DAOs
             List<Statistic> statistics = new List<Statistic>();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     statistics = context.Statistics.Where(movie => movie.Date >= startDate && movie.Date <= endDate)
                         .OrderByDescending(movie => movie.View)
