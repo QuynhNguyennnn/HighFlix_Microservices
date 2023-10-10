@@ -11,5 +11,5 @@ public partial class Category
 
     public bool IsActive { get; set; }
 
-    public virtual ICollection<MovieCategory> MovieCategories { get; set; } = new List<MovieCategory>();
+    public virtual ICollection<Movie> Movies { get; set; } = new List<Movie>();
 }

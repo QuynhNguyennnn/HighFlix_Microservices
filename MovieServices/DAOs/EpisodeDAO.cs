@@ -9,7 +9,7 @@ namespace MovieServices.DAOs
             List<Episode> episodes = new List<Episode>();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     var episodeList = context.Episodes.ToList();
                     foreach (var episode in episodeList)
@@ -59,7 +59,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     return context.Episodes.FirstOrDefault(e => e.EpisodeId == episodeId);
                 }
@@ -75,7 +75,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     context.Episodes.Add(episode);
                     context.SaveChanges();
@@ -94,7 +94,7 @@ namespace MovieServices.DAOs
 
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     var _episode = context.Episodes.SingleOrDefault(e => e.EpisodeId == episode.EpisodeId);
                     if (_episode != null)
@@ -122,7 +122,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     var _episode = context.Episodes.SingleOrDefault(e => e.EpisodeId == episodeId);
                     if (_episode != null)

@@ -9,7 +9,7 @@ namespace AuthenticationServices.DAOs
             User user = new User();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     user = context.Users.FirstOrDefault(user => (user.Username == username) && user.IsActive);
                     if (user != null)
@@ -40,7 +40,7 @@ namespace AuthenticationServices.DAOs
             User member = new User();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     member = context.Users.FirstOrDefault(user => (user.Username == username) && user.IsActive);
                     if (member != null)
@@ -64,7 +64,7 @@ namespace AuthenticationServices.DAOs
             User userNew = new User();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     var userValidate = context.Users.FirstOrDefault(userCheck => userCheck.Username == user.Username);
                     if (userValidate != null)
@@ -96,7 +96,7 @@ namespace AuthenticationServices.DAOs
             var users = new List<User>();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     var userList = context.Users.ToList();
                     foreach (var user in userList)
@@ -120,7 +120,7 @@ namespace AuthenticationServices.DAOs
             var user = new User();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixContext())
                 {
                     user = context.Users.FirstOrDefault(user => (user.UserId == id) && user.IsActive);
                     if (user != null)
