@@ -4,8 +4,6 @@
     {
         public int MovieId { get; set; }
 
-        public int PostedByUser { get; set; }
-
         public string MovieName { get; set; } = null!;
 
         public List<int>? Categories { get; set; }
@@ -28,6 +26,6 @@
 
         public string? MainCharacters { get; set; }
 
-        public byte[]? Trailer { get; set; }
+        public string? Trailer { get; set; }
     }
 }

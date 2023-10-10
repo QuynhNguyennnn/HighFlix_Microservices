@@ -53,7 +53,7 @@ namespace MovieServices.DAOs
             List<Movie> movies = new List<Movie>();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var movieList = context.Movies.OrderByDescending(movie => movie.MovieId).Take(10).ToList();
                     foreach (var movie in movieList)
@@ -103,6 +103,7 @@ namespace MovieServices.DAOs
                     if (_movie != null)
                     {
                         movie.IsActive = _movie.IsActive;
+                        movie.PostedByUser = _movie.PostedByUser;
 
                         // Sử dụng SetValues để cập nhật giá trị từ movie vào _movie
                         context.Entry(_movie).CurrentValues.SetValues(movie);

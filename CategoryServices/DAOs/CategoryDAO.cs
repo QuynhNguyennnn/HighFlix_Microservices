@@ -34,7 +34,7 @@ namespace CategoryServices.DAOs
             Category category = new Category();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     category = context.Categories.SingleOrDefault(c => c.CategoryId == id);
                 }

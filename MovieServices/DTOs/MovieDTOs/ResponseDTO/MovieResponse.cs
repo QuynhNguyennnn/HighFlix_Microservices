@@ -26,7 +26,7 @@
 
         public string? MainCharacters { get; set; }
 
-        public byte[]? Trailer { get; set; }
+        public string? Trailer { get; set; }
 
         public string? Comments { get; set; }
     }
