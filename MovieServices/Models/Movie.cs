@@ -27,7 +27,7 @@ public partial class Movie
 
     public string? MainCharacters { get; set; }
 
-    public byte[]? Trailer { get; set; }
+    public string? Trailer { get; set; }
 
     public string? Comments { get; set; }
 
@@ -40,6 +40,4 @@ public partial class Movie
     public virtual User PostedByUserNavigation { get; set; } = null!;
 
     public virtual ICollection<Statistic> Statistics { get; set; } = new List<Statistic>();
-
-    public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
 }

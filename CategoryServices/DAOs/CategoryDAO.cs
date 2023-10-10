@@ -9,7 +9,7 @@ namespace CategoryServices.DAOs
             List<Category> categories = new List<Category>();
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var categoryList = context.Categories.ToList();
                     foreach (var category in categoryList)
@@ -49,7 +49,7 @@ namespace CategoryServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     category.IsActive = true;
 
@@ -69,7 +69,7 @@ namespace CategoryServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var _category = context.Categories.SingleOrDefault(c => c.CategoryId == category.CategoryId && c.IsActive);
                     if (_category != null)
@@ -98,7 +98,7 @@ namespace CategoryServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixV2Context())
+                using (var context = new HighFlixV4Context())
                 {
                     var _category = context.Categories.SingleOrDefault(c => c.CategoryId == id && c.IsActive);
                     if (_category != null)
