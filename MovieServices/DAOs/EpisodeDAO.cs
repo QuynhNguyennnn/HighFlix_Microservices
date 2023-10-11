@@ -9,9 +9,34 @@ namespace MovieServices.DAOs
             List<Episode> episodes = new List<Episode>();
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     var episodeList = context.Episodes.ToList();
+                    foreach (var episode in episodeList)
+                    {
+                        if (episode.IsActive)
+                        {
+                            episodes.Add(episode);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return episodes;
+        }
+
+        public static List<Episode> GetEpisodesByMovieId(int movieId)
+        {
+            List<Episode> episodes = new List<Episode>();
+            try
+            {
+                using(var context = new HighFlixV4Context())
+                {
+                    var episodeList = context.Episodes.Where(e => e.MovieId == movieId);
                     foreach (var episode in episodeList)
                     {
                         if (episode.IsActive)
@@ -34,7 +59,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     return context.Episodes.FirstOrDefault(e => e.EpisodeId == episodeId);
                 }
@@ -50,7 +75,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     context.Episodes.Add(episode);
                     context.SaveChanges();
@@ -69,7 +94,7 @@ namespace MovieServices.DAOs
 
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     var _episode = context.Episodes.SingleOrDefault(e => e.EpisodeId == episode.EpisodeId);
                     if (_episode != null)
@@ -97,7 +122,7 @@ namespace MovieServices.DAOs
         {
             try
             {
-                using (var context = new HighFlixContext())
+                using (var context = new HighFlixV4Context())
                 {
                     var _episode = context.Episodes.SingleOrDefault(e => e.EpisodeId == episodeId);
                     if (_episode != null)
