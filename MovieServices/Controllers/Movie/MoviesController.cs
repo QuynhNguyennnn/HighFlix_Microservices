@@ -32,9 +32,10 @@ namespace MovieServices.Controllers.Movie
             {
                 List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
                 MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                movieResponse.Categories = new List<string>();
                 movieCategories.ForEach(movieCategory =>
                 {
-                    movieResponse.Categories += movieCategory.CategoryId.ToString();
+                    movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
                 });
                 movieResponseList.Add(movieResponse);
             }
@@ -52,10 +53,15 @@ namespace MovieServices.Controllers.Movie
             var movie = service.GetMovieById(id);
             var movieResponse = _mapper.Map<MovieResponse>(movie);
             List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+            movieResponse.Categories = new List<string>();
             movieCategories.ForEach(movieCategory =>
             {
-                movieResponse.Categories += movieCategory.CategoryId.ToString();
+                movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
             });
+            movieResponse.Description = movieResponse.Description.TrimEnd('\'');
+            movieResponse.Description = movieResponse.Description.Substring(2);
+            movieResponse.AliasName = movieResponse.AliasName.TrimEnd('\'');
+            movieResponse.AliasName = movieResponse.AliasName.Substring(2);
             var response = new ServiceResponse<MovieResponse>();
             response.Data = movieResponse;
             response.Message = "Get Movie Detail";
@@ -74,9 +80,10 @@ namespace MovieServices.Controllers.Movie
             {
                 List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
                 MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                movieResponse.Categories = new List<string>();
                 movieCategories.ForEach(movieCategory =>
                 {
-                    movieResponse.Categories += movieCategory.CategoryId.ToString();
+                    movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
                 });
                 movieResponseList.Add(movieResponse);
             }
