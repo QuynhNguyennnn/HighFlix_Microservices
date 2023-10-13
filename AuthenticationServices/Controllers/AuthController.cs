@@ -46,6 +46,7 @@ namespace APIS.Controllers.Authentication
                     var userMap = _mapper.Map<User>(registerDto);
                     var user = userService.Register(userMap);
                     var token = GeneratAccessToken(user.Username);
+                    authResponse.UserId = usernameValidate.UserId;
                     authResponse.Username = user.Username;
                     authResponse.AccessToken = token;
                     authResponse.Message = "Register successful";
@@ -81,6 +82,7 @@ namespace APIS.Controllers.Authentication
                     var token = GeneratAccessToken(loginDto.Username);
                     authResponse.AccessToken = token;
                     var refreshToken = GenerateRefreshToken(loginDto.Username);
+                    authResponse.UserId = user.UserId;
                     authResponse.Username = loginDto.Username;
                     authResponse.RefreshToken = refreshToken;
                     authResponse.Message = "Login successful";
