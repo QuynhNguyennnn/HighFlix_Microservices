@@ -191,11 +191,15 @@ namespace APIS.Controllers.Authentication
         }
 
         [HttpGet("id")]
-        public ActionResult<UserResponse> GetUserById(int id)
+        public ActionResult<ServiceResponse<UserResponse>> GetUserById(int id)
         {
             var user = userService.GetUserById(id);
             var userResponse = _mapper.Map<UserResponse>(user);
-            return userResponse;
+            var response = new ServiceResponse<UserResponse>();
+            response.Data = userResponse;
+            response.Message = "Get User Detail";
+            response.Status = 200;
+            return response;
         }
 
     }
