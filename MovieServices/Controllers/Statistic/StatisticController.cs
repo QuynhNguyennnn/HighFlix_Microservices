@@ -73,6 +73,7 @@ namespace MovieServices.Controllers.Statistic
                         }
                         if (viewCount > 0)
                         {
+                            statisticMovieResponse.StatisticId = movieList[i].StatisticId;
                             statisticMovieResponse.MovieName = movieList[i].MovieName;
                             statisticMovieResponse.MovieThumnailImage = movieList[i].MovieThumnailImage;
                             statisticMovieResponse.ReleasedYear = movieList[i].ReleasedYear;
@@ -118,11 +119,12 @@ namespace MovieServices.Controllers.Statistic
                 foreach (var item in statisticResponses)
                 {
                     StatisticMovieResponse statisticMovieResponse = new StatisticMovieResponse();
-                   var movie = movieService.GetMovieById(item.MovieId);
+                    var movie = movieService.GetMovieById(item.MovieId);
                     if (movie == null)
                     {
                         continue;
                     }
+                    statisticMovieResponse.StatisticId = item.StatisticId;
                     statisticMovieResponse.View += item.View;
                     statisticMovieResponse.MovieName = movie.MovieName;
                     statisticMovieResponse.MovieThumnailImage = movie.MovieThumnailImage;
