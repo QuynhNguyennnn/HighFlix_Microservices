@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using APIS.DTOs.AuthenticationDTOs.ResponseDto;
 using APIS.DTOs.CommentDTOs.ResponseDto;
 using MovieServices.DTOs.CommentDTOs.RequestDto;
-using MovieServices.DTOs.EpisodeDTOs.ResponseDTO;
 
 namespace MovieServices.Controllers.Comment
 {
@@ -30,6 +29,22 @@ namespace MovieServices.Controllers.Comment
             var response = new ServiceResponse<List<CommentReponse>>();
             var commentResponseList = new List<CommentReponse>();
             var commentList = service.GetComments();
+            foreach (var comment in commentList)
+            {
+                commentResponseList.Add(_mapper.Map<CommentReponse>(comment));
+            }
+            response.Data = commentResponseList;
+            response.Message = "Get Comment List";
+            response.Status = 200;
+            response.TotalDataList = commentResponseList.Count;
+            return response;
+        }
+        [HttpGet("movieId")]
+        public ActionResult<ServiceResponse<List<CommentReponse>>> GetCommentById(int movieId)
+        {
+            var response = new ServiceResponse<List<CommentReponse>>();
+            var commentResponseList = new List<CommentReponse>();
+            var commentList = service.GetCommentById(movieId);
             foreach (var comment in commentList)
             {
                 commentResponseList.Add(_mapper.Map<CommentReponse>(comment));

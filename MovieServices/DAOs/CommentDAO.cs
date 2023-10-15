@@ -28,6 +28,30 @@ namespace MovieServices.DAOs
             }
             return comments;
         }
+        public static List<Comment> GetCommentById(int movieId)
+        {
+            List<Comment> comments = new List<Comment>();
+            try
+            {
+                using (var context = new HighFlixV4Context())
+                {
+                    var commentList = context.Comments.Where(e => e.MovieId == movieId);
+                    foreach (var comment in commentList )
+                    {
+                        if (comment.IsActive)
+                        {
+                            comments.Add(comment);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return comments;
+        }
         public static Comment CreateComment(Comment comment)
         {
             try
