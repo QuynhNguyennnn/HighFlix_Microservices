@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieServices.DTOs.MovieDTOs.RequestDto;
 using MovieServices.DTOs.MovieDTOs.ResponseDTO;
+using MovieServices.DTOs.StatisticDTOs.RequestDTO;
 using MovieServices.Models;
 using MovieServices.Services.MovieServices;
 using MovieServices.Services.StatisticServices;
@@ -73,7 +74,6 @@ namespace MovieServices.Controllers.Statistic
                         }
                         if (viewCount > 0)
                         {
-                            statisticMovieResponse.StatisticId = movieList[i].StatisticId;
                             statisticMovieResponse.MovieName = movieList[i].MovieName;
                             statisticMovieResponse.MovieThumnailImage = movieList[i].MovieThumnailImage;
                             statisticMovieResponse.ReleasedYear = movieList[i].ReleasedYear;
@@ -95,11 +95,12 @@ namespace MovieServices.Controllers.Statistic
             return response;
         }
 
-        [HttpGet("{startDate}/{endDate}")]
+        //[HttpGet("{startDate}/{endDate}")]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
-        public ActionResult<ServiceResponse<List<StatisticMovieResponse>>> GetStatisticByDate(DateTime startDate, DateTime endDate)
+        public ActionResult<ServiceResponse<List<StatisticMovieResponse>>> GetStatisticByDate(StatisticDateRequest request)
         {
-            if (startDate > endDate)
+            if (request.StartDate > request.EndDate)
             {
                 return BadRequest("Time is not valid.");
             }
@@ -107,7 +108,7 @@ namespace MovieServices.Controllers.Statistic
             List<StatisticMovieResponse> statisticMovieResponses = new List<StatisticMovieResponse>();
             List<StatisticMovieResponse> statisticMovieResponsesFinal = new List<StatisticMovieResponse>();
             List<Models.Movie> movieList = movieService.GetMovieList();
-            var statisticResponses = statisticService.GetStatisticByDateToDate(startDate, endDate);
+            var statisticResponses = statisticService.GetStatisticByDateToDate(request.StartDate, request.EndDate);
             if (statisticResponses == null)
             {
                 response.Data = null;
@@ -124,7 +125,6 @@ namespace MovieServices.Controllers.Statistic
                     {
                         continue;
                     }
-                    statisticMovieResponse.StatisticId = item.StatisticId;
                     statisticMovieResponse.View += item.View;
                     statisticMovieResponse.MovieName = movie.MovieName;
                     statisticMovieResponse.MovieThumnailImage = movie.MovieThumnailImage;
