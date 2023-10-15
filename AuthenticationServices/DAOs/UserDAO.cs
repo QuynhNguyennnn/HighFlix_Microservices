@@ -138,5 +138,37 @@ namespace AuthenticationServices.DAOs
                 throw new Exception(e.Message);
             }
         }
+
+        public static User DeleteUser(int id)
+        {
+            var userActive = new User();
+            var userUnActive = new User();
+            try
+            {
+                using (var context = new HighFlixV4Context())
+                {
+                    userActive = context.Users.FirstOrDefault(user => (user.UserId == id) && user.IsActive);
+                    userUnActive = context.Users.FirstOrDefault(user => (user.UserId == id) && !user.IsActive);
+                    if (userActive != null)
+                    {
+                        userActive.IsActive = false;
+                        context.Users.Update(userActive);
+                        context.SaveChanges();
+                        return userActive;
+                    } else if (userUnActive != null)
+                    {
+                        return userUnActive;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
