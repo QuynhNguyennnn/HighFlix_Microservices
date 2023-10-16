@@ -3,6 +3,7 @@
     public class CommentReponse
     {
         public int UserId { get; set; }
+        public string UserName { get; set; }
 
         public int MovieId { get; set; }
 
