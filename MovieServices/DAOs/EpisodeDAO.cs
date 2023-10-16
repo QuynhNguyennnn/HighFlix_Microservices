@@ -14,13 +14,9 @@ namespace MovieServices.DAOs
                     var episodeList = context.Episodes.ToList();
                     foreach (var episode in episodeList)
                     {
-                        if (episode.IsActive)
-                        {
-                            episodes.Add(episode);
-                        }
+                        episodes.Add(episode);
                     }
                 }
-
             }
             catch (Exception ex)
             {

@@ -6,6 +6,8 @@ using AuthenticationServices.Models;
 using AuthenticationServices.Services.RoleServices;
 using AuthenticationServices.Services.UserServices;
 using AutoMapper;
+using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -46,6 +48,7 @@ namespace APIS.Controllers.Authentication
                     var userMap = _mapper.Map<User>(registerDto);
                     var user = userService.Register(userMap);
                     var token = GeneratAccessToken(user.Username);
+                    authResponse.UserId = user.UserId;
                     authResponse.Username = user.Username;
                     authResponse.AccessToken = token;
                     authResponse.Message = "Register successful";
@@ -81,6 +84,7 @@ namespace APIS.Controllers.Authentication
                     var token = GeneratAccessToken(loginDto.Username);
                     authResponse.AccessToken = token;
                     var refreshToken = GenerateRefreshToken(loginDto.Username);
+                    authResponse.UserId = user.UserId;
                     authResponse.Username = loginDto.Username;
                     authResponse.RefreshToken = refreshToken;
                     authResponse.Message = "Login successful";
@@ -172,6 +176,7 @@ namespace APIS.Controllers.Authentication
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult<ServiceResponse<List<UserResponse>>> GetUsers()
         {
             var response = new ServiceResponse<List<UserResponse>>();
@@ -189,11 +194,42 @@ namespace APIS.Controllers.Authentication
         }
 
         [HttpGet("id")]
-        public ActionResult<UserResponse> GetUserById(int id)
+        [Authorize(Roles = "Admin")]
+        public ActionResult<ServiceResponse<UserResponse>> GetUserById(int id)
         {
+            var response = new ServiceResponse<UserResponse>();
             var user = userService.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
             var userResponse = _mapper.Map<UserResponse>(user);
-            return userResponse;
+            response.Data = userResponse;
+            response.Message = "Get User List";
+            response.Status = 200;
+            return response;
+        }
+
+        [HttpDelete("id")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult<ServiceResponse<UserResponse>> DeleteUser(int id)
+        {
+            var response = new ServiceResponse<List<UserResponse>>();
+            var user = userService.DeleteUser(id);
+            if (user == null)
+            {
+                response.Message = "User not found.";
+                response.Status = 404;
+                return NotFound(response);
+            } else if (user.IsActive == false)
+            {
+                response.Message = "User has already deleted.";
+                response.Status = 400;
+                return BadRequest(response);
+            }
+            response.Message = "User deleted.";
+            response.Status = 200;
+            return Ok(response);
         }
 
     }
