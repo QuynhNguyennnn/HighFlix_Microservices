@@ -114,6 +114,36 @@ namespace MovieServices.Controllers.Movie
             return response;
         }
 
+        [HttpGet("update/id")]
+        public async Task<ActionResult<ServiceResponse<MovieResponse>>> GetMovieByIdForUpdate(int id)
+        {
+            var movie = service.GetMovieById(id);
+            var movieResponse = _mapper.Map<MovieResponse>(movie);
+            List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+            movieResponse.Categories = new List<string>();
+            movieCategories.ForEach(movieCategory =>
+            {
+                movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
+            });
+            if (movieResponse.Description.Contains("N\'"))
+            {
+                movieResponse.Description = movieResponse.Description.TrimEnd('\'');
+                movieResponse.Description = movieResponse.Description.Substring(2);
+            }
+            if (movieResponse.AliasName.Contains("N\'"))
+            {
+                movieResponse.AliasName = movieResponse.AliasName.TrimEnd('\'');
+                movieResponse.AliasName = movieResponse.AliasName.Substring(2);
+            }
+
+            var response = new ServiceResponse<MovieResponse>();
+            response.Data = movieResponse;
+            response.Message = "Get Movie Detail";
+            response.Status = 200;
+            response.TotalDataList = 1;
+            return response;
+        }
+
         [HttpGet("new")]
         public ActionResult<ServiceResponse<List<MovieResponse>>> GetMovieListNew()
         {
