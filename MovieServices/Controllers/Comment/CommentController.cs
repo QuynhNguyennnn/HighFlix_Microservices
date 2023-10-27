@@ -23,7 +23,7 @@ namespace MovieServices.Controllers.Comment
             _mapper = mapper;
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult<ServiceResponse<List<CommentReponse>>> GetComments()
         {
             var response = new ServiceResponse<List<CommentReponse>>();
@@ -40,11 +40,28 @@ namespace MovieServices.Controllers.Comment
             return response;
         }
         [HttpGet("movieId")]
-        public ActionResult<ServiceResponse<List<CommentReponse>>> GetCommentById(int movieId)
+        public ActionResult<ServiceResponse<List<CommentReponse>>> GetCommentByMovieId(int movieId)
         {
             var response = new ServiceResponse<List<CommentReponse>>();
             var commentResponseList = new List<CommentReponse>();
-            var commentList = service.GetCommentById(movieId);
+            var commentList = service.GetCommentByMovieId(movieId);
+            foreach (var comment in commentList)
+            {
+                commentResponseList.Add(_mapper.Map<CommentReponse>(comment));
+            }
+            response.Data = commentResponseList;
+            response.Message = "Get Comment List";
+            response.Status = 200;
+            response.TotalDataList = commentResponseList.Count;
+            return response;
+        }
+
+        [HttpGet("id")]
+        public ActionResult<ServiceResponse<List<CommentReponse>>> GetCommentById(int id)
+        {
+            var response = new ServiceResponse<List<CommentReponse>>();
+            var commentResponseList = new List<CommentReponse>();
+            var commentList = service.GetCommentById(id);
             foreach (var comment in commentList)
             {
                 commentResponseList.Add(_mapper.Map<CommentReponse>(comment));
@@ -58,7 +75,7 @@ namespace MovieServices.Controllers.Comment
 
 
         [HttpPost("Create")]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
         public ActionResult<ServiceResponse<CommentReponse>> CreateComment(CreateCommentDto createCommentDto)
         {
             Models.Comment comment = _mapper.Map<Models.Comment>(createCommentDto);
@@ -81,7 +98,7 @@ namespace MovieServices.Controllers.Comment
             return response;
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
         public ActionResult<ServiceResponse<CommentReponse>> DeleteComment(int id)
         {
