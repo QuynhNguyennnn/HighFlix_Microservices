@@ -1,6 +1,6 @@
 ﻿namespace APIS.DTOs.CommentDTOs.ResponseDto
 {
-    public class CommentReponse
+    public class CommentResponse
     {
         public int CommentId { get; set; }
         public int UserId { get; set; }

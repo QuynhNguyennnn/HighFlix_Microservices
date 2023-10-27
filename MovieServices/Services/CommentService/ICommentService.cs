@@ -5,7 +5,7 @@ namespace MovieServices.Services.CommentServices
     public interface ICommentService
     {
         List<Comment> GetComments();
-        List<Comment> GetCommentById(int id);
+        Comment GetCommentById(int id);
         List<Comment> GetCommentByMovieId(int movieId);
         Comment CreateComment(Comment comment);
         Comment UpdateComment(Comment comment);
