@@ -6,7 +6,8 @@ namespace MovieServices.Services.CommentServices
     public class CommentService : ICommentService
     {
         public List<Comment> GetComments() => CommentDAO.GetComments();
-        public List<Comment> GetCommentById(int movieId) => CommentDAO.GetCommentById(movieId);
+        public Comment GetCommentById(int id) => CommentDAO.GetCommentById(id);
+        public List<Comment> GetCommentByMovieId(int movieId) => CommentDAO.GetCommentByMovieId(movieId);
         public Comment CreateComment(Comment comment) => CommentDAO.CreateComment(comment);
         public Comment UpdateComment(Comment comment) => CommentDAO.UpdateComment(comment);
 

@@ -32,8 +32,8 @@ namespace ProjectAPI
 
             //for comment
             CreateMap<CreateCommentDto, Comment>();
-            CreateMap<CommentReponse, Comment>();
-            CreateMap<Comment, CommentReponse>();
+            CreateMap<CommentResponse, Comment>();
+            CreateMap<Comment, CommentResponse>();
             CreateMap<UpdateCommentDto, Comment>();
             CreateMap<DeleteCommentDto, Comment>();
         }
