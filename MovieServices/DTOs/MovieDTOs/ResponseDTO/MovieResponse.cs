@@ -6,7 +6,7 @@
 
         public string MovieName { get; set; } = null!;
 
-        public string Categories { get; set; } = null!;
+        public List<string> Categories { get; set; } = null!;
 
         public string MovieThumnailImage { get; set; } = null!;
 
