@@ -9,5 +9,6 @@ namespace AuthenticationServices.Services.UserServices
         User Register(User user);
         List<User> GetUsers();
         User GetUserById(int id);
+        User DeleteUser(int id);
     }
 }
