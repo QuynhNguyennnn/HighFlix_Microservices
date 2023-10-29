@@ -20,6 +20,7 @@ namespace MovieServices.Controllers.Comment
         private ICommentService service = new CommentService();
         private readonly IMapper _mapper;
 
+
         public CommentController(IMapper mapper)
         {
             _mapper = mapper;
@@ -77,8 +78,9 @@ namespace MovieServices.Controllers.Comment
         public ActionResult<ServiceResponse<CommentResponse>> CreateComment(CreateCommentDto createCommentDto)
         {
             Models.Comment comment = _mapper.Map<Models.Comment>(createCommentDto);
-            var commentResponse = _mapper.Map<CommentResponse>(service.CreateComment(comment));
-            var response = new ServiceResponse<CommentResponse>();
+
+            var commentResponse = _mapper.Map<CommentReponse>(service.CreateComment(comment));
+            var response = new ServiceResponse<CommentReponse>();
             response.Data = commentResponse;
             response.Status = 200;
             response.Message = "Create Comment";
