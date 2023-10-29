@@ -79,8 +79,8 @@ namespace MovieServices.Controllers.Comment
         {
             Models.Comment comment = _mapper.Map<Models.Comment>(createCommentDto);
 
-            var commentResponse = _mapper.Map<CommentReponse>(service.CreateComment(comment));
-            var response = new ServiceResponse<CommentReponse>();
+            var commentResponse = _mapper.Map<CommentResponse>(service.CreateComment(comment));
+            var response = new ServiceResponse<CommentResponse>();
             response.Data = commentResponse;
             response.Status = 200;
             response.Message = "Create Comment";
