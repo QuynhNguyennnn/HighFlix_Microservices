@@ -9,6 +9,7 @@ namespace MovieServices.Services.MovieServices
     {
         List<Movie> GetMovieList();
         List<Movie> GetMovieListNew();
+        List<Movie> GetMovieListByCategory(int categoryId);
         Movie GetMovieById(int id);
         List<Movie> SearchMovies(string searchMovieName);
         Movie CreateMovie(Movie movie , List<int> cates);

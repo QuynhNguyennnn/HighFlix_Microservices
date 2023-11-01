@@ -14,6 +14,8 @@ namespace MovieServices.Services.MovieServices
 
         public List<Movie> GetMovieListNew() => MovieDAO.GetMovieListNew();
 
+        public List<Movie> GetMovieListByCategory(int categoryId) => MovieDAO.GetListMovieByCategory(categoryId);
+
         public Movie CreateMovie(Movie movie, List<int> cates) => MovieDAO.CreateMovie(movie, cates);
 
         public Movie UpdateMovie(Movie movie, List<int> cates) => MovieDAO.UpdateMovie(movie, cates);

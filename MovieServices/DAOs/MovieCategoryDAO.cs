@@ -77,5 +77,25 @@ namespace MovieServices.DAOs
                 throw new Exception(ex.Message);
             }
         }
+
+        public static void DeleteMovieCategory(int movieId)
+        {
+            try
+            {
+                using (var context = new HighFlixV4Context())
+                {
+                    var movieCategories = context.MovieCategories.Where(mc => mc.MovieId == movieId).ToList();
+                    foreach (MovieCategory cate in movieCategories)
+                    {
+                        context.MovieCategories.Remove(cate);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -178,6 +178,40 @@ namespace MovieServices.Controllers.Movie
             return response;
         }
 
+        [HttpGet("categoryId")]
+        public ActionResult<ServiceResponse<List<MovieResponse>>> GetMovieListByCategoryId(int categoryId)
+        {
+            var response = new ServiceResponse<List<MovieResponse>>();
+            var movieResponseList = new List<MovieResponse>();
+            var movieList = service.GetMovieListByCategory(categoryId);
+            foreach (var movie in movieList)
+            {
+                List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                movieResponse.Categories = new List<string>();
+                if (movieResponse.Description.Contains("N\'"))
+                {
+                    movieResponse.Description = movieResponse.Description.TrimEnd('\'');
+                    movieResponse.Description = movieResponse.Description.Substring(2);
+                }
+                if (movieResponse.AliasName.Contains("N\'"))
+                {
+                    movieResponse.AliasName = movieResponse.AliasName.TrimEnd('\'');
+                    movieResponse.AliasName = movieResponse.AliasName.Substring(2);
+                }
+                movieCategories.ForEach(movieCategory =>
+                {
+                    movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
+                });
+                movieResponseList.Add(movieResponse);
+            }
+            response.Data = movieResponseList;
+            response.Message = "Get Movie List By Category";
+            response.Status = 200;
+            response.TotalDataList = movieList.Count;
+            return response;
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
         public ActionResult<ServiceResponse<MovieResponse>> CreateMovie(AddMovieDto addMovieDto)
