@@ -7,6 +7,10 @@ using MovieServices.DTOs.MovieDTOs.ResponseDTO;
 using MovieServices.Services.MovieServices;
 using MovieServices.Models;
 using MovieServices.DAOs;
+using System.Net.Http;
+using System.Text.Json;
+using Microsoft.Extensions.Options;
+using CategoryServices.DTOs.ResponseDTO;
 
 namespace MovieServices.Controllers.Movie
 {
@@ -14,11 +18,15 @@ namespace MovieServices.Controllers.Movie
     [ApiController]
     public class MoviesController : ControllerBase
     {
+        private readonly HttpClient _httpClient = null;
         private IMovieService service = new MovieService();
         private readonly IMapper _mapper;
+        private string CategoryManagementApiUrl = "";
 
         public MoviesController(IMapper mapper)
         {
+            _httpClient = new HttpClient();
+            CategoryManagementApiUrl = "http://localhost:44386/api/Categories";
             _mapper = mapper;
         }
 
@@ -32,9 +40,20 @@ namespace MovieServices.Controllers.Movie
             {
                 List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
                 MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                movieResponse.Categories = new List<string>();
+                if (movieResponse.Description.Contains("N\'"))
+                {
+                    movieResponse.Description = movieResponse.Description.TrimEnd('\'');
+                    movieResponse.Description = movieResponse.Description.Substring(2);
+                }
+                if (movieResponse.AliasName.Contains("N\'"))
+                {
+                    movieResponse.AliasName = movieResponse.AliasName.TrimEnd('\'');
+                    movieResponse.AliasName = movieResponse.AliasName.Substring(2);
+                }
                 movieCategories.ForEach(movieCategory =>
                 {
-                    movieResponse.Categories += movieCategory.CategoryId.ToString();
+                    movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
                 });
                 movieResponseList.Add(movieResponse);
             }
@@ -47,15 +66,76 @@ namespace MovieServices.Controllers.Movie
         }
 
         [HttpGet("id")]
-        public ActionResult<ServiceResponse<MovieResponse>> GetMovieById(int id)
+        public async Task<ActionResult<ServiceResponse<MovieResponse>>> GetMovieByIdAsync(int id)
         {
             var movie = service.GetMovieById(id);
             var movieResponse = _mapper.Map<MovieResponse>(movie);
             List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+            movieResponse.Categories = new List<string>();
             movieCategories.ForEach(movieCategory =>
             {
-                movieResponse.Categories += movieCategory.CategoryId.ToString();
+                movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
             });
+            if (movieResponse.Description.Contains("N\'"))
+            {
+                movieResponse.Description = movieResponse.Description.TrimEnd('\'');
+                movieResponse.Description = movieResponse.Description.Substring(2);
+            }
+            if (movieResponse.AliasName.Contains("N\'"))
+            {
+                movieResponse.AliasName = movieResponse.AliasName.TrimEnd('\'');
+                movieResponse.AliasName = movieResponse.AliasName.Substring(2);
+            }
+
+            for (int i = 0; i < movieResponse.Categories.Count; i++)
+            {
+                var category = movieResponse.Categories[i];
+                HttpResponseMessage responseData = await _httpClient.GetAsync($"{CategoryManagementApiUrl}/id?id={int.Parse(category)}");
+                string strData = await responseData.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                ServiceResponse<CategoryResponse> categoryResponse = JsonSerializer.Deserialize<ServiceResponse<CategoryResponse>>(strData, options);
+
+                var newCategory = categoryResponse.Data.CategoryName;
+
+                // Gán lại giá trị của category bằng giá trị mới
+                movieResponse.Categories[i] = newCategory;
+            }
+
+            var response = new ServiceResponse<MovieResponse>();
+            response.Data = movieResponse;
+            response.Message = "Get Movie Detail";
+            response.Status = 200;
+            response.TotalDataList = 1;
+            return response;
+        }
+
+        [HttpGet("update/id")]
+        public async Task<ActionResult<ServiceResponse<MovieResponse>>> GetMovieByIdForUpdate(int id)
+        {
+            var movie = service.GetMovieById(id);
+            var movieResponse = _mapper.Map<MovieResponse>(movie);
+            List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+            movieResponse.Categories = new List<string>();
+            movieCategories.ForEach(movieCategory =>
+            {
+                movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
+            });
+            if (movieResponse.Description.Contains("N\'"))
+            {
+                movieResponse.Description = movieResponse.Description.TrimEnd('\'');
+                movieResponse.Description = movieResponse.Description.Substring(2);
+            }
+            if (movieResponse.AliasName.Contains("N\'"))
+            {
+                movieResponse.AliasName = movieResponse.AliasName.TrimEnd('\'');
+                movieResponse.AliasName = movieResponse.AliasName.Substring(2);
+            }
+
             var response = new ServiceResponse<MovieResponse>();
             response.Data = movieResponse;
             response.Message = "Get Movie Detail";
@@ -74,9 +154,20 @@ namespace MovieServices.Controllers.Movie
             {
                 List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
                 MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                movieResponse.Categories = new List<string>();
+                if (movieResponse.Description.Contains("N\'"))
+                {
+                    movieResponse.Description = movieResponse.Description.TrimEnd('\'');
+                    movieResponse.Description = movieResponse.Description.Substring(2);
+                }
+                if (movieResponse.AliasName.Contains("N\'"))
+                {
+                    movieResponse.AliasName = movieResponse.AliasName.TrimEnd('\'');
+                    movieResponse.AliasName = movieResponse.AliasName.Substring(2);
+                }
                 movieCategories.ForEach(movieCategory =>
                 {
-                    movieResponse.Categories += movieCategory.CategoryId.ToString();
+                    movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
                 });
                 movieResponseList.Add(movieResponse);
             }

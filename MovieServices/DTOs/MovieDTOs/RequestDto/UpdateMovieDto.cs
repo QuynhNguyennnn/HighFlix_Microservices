@@ -12,8 +12,6 @@
 
         public string MoviePoster { get; set; } = null!;
 
-        public string? ListEpisode { get; set; }
-
         public int? TotalEpisodes { get; set; }
 
         public string Description { get; set; } = null!;
