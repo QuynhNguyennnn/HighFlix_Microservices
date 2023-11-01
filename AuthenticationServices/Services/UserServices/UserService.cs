@@ -13,5 +13,7 @@ namespace AuthenticationServices.Services.UserServices
 
         public List<User> GetUsers() => UserDAO.GetUsers();
         public User GetUserById(int id) => UserDAO.GetUserById(id);
+
+        public User DeleteUser(int id) => UserDAO.DeleteUser(id);
     }
 }
