@@ -171,5 +171,26 @@ namespace MovieServices.DAOs
                 throw new Exception(ex.Message);
             }
         }
+        public static List<Movie> GetMoviesByCategoryId(int categoryId)
+        {
+            try
+            {
+                using (var context = new HighFlixV4Context())
+                {
+                    var movieIds = context.MovieCategories
+                        .Where(mc => mc.CategoryId == categoryId)
+                        .Select(mc => mc.MovieId)
+                        .ToList();
+
+                    return context.Movies
+                        .Where(movie => movie.IsActive && movieIds.Contains(movie.MovieId))
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

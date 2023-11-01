@@ -49,6 +49,27 @@ namespace MovieServices.DAOs
             }
             return episodes;
         }
+        public static Episode GetLastestEpisodesByMovieId(int movieId)
+        {
+            try
+            {
+                using (var context = new HighFlixV4Context())
+                {
+                    var episode = context.Episodes
+                        .Where(e => e.MovieId == movieId && e.IsActive)
+                        .OrderByDescending(e => e.EpisodeId)
+                        .FirstOrDefault();
+
+                    return episode;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
 
         // Retrieve an episode by ID
         public static Episode GetEpisodeById(int episodeId)

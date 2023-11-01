@@ -12,6 +12,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Options;
 using CategoryServices.DTOs.ResponseDTO;
 
+
 namespace MovieServices.Controllers.Movie
 {
     [Route("api/[controller]")]
@@ -177,6 +178,8 @@ namespace MovieServices.Controllers.Movie
             response.TotalDataList = movieList.Count;
             return response;
         }
+
+
 
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
