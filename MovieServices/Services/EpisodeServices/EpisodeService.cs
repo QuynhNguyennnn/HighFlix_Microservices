@@ -16,5 +16,6 @@ namespace MovieServices.Services.EpisodeServices
         public Episode UpdateEpisode(Episode episode) => EpisodeDAO.UpdateEpisode(episode);
 
         public Episode DeleteEpisode(int episodeId) => EpisodeDAO.DeleteEpisode(episodeId);
+        public Episode GetLastestEpisodesByMovieId(int movieId) => EpisodeDAO.GetLastestEpisodesByMovieId(movieId);
     }
 }
