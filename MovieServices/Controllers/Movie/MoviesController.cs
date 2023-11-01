@@ -26,7 +26,7 @@ namespace MovieServices.Controllers.Movie
         public MoviesController(IMapper mapper)
         {
             _httpClient = new HttpClient();
-            CategoryManagementApiUrl = "http://localhost:44386/api/Categories";
+            CategoryManagementApiUrl = "http://host.docker.internal:7112/api/Categories";
             _mapper = mapper;
         }
 
