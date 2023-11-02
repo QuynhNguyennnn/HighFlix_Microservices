@@ -26,7 +26,7 @@ namespace MovieServices.Controllers.Comment
             _mapper = mapper;
         }
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<ServiceResponse<List<CommentResponse>>> GetComments()
         {
             var response = new ServiceResponse<List<CommentResponse>>();
@@ -42,7 +42,7 @@ namespace MovieServices.Controllers.Comment
             response.TotalDataList = commentResponseList.Count;
             return response;
         }
-        [HttpGet("movieId")]
+        [HttpGet("movie/movieId")]
         public ActionResult<ServiceResponse<List<CommentResponse>>> GetCommentByMovieId(int movieId)
         {
             var response = new ServiceResponse<List<CommentResponse>>();
@@ -99,7 +99,7 @@ namespace MovieServices.Controllers.Comment
 
 
         [HttpPost("Create")]
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         public ActionResult<ServiceResponse<CommentResponse>> CreateComment(CreateCommentDto createCommentDto)
         {
             Models.Comment comment = _mapper.Map<Models.Comment>(createCommentDto);
@@ -123,7 +123,7 @@ namespace MovieServices.Controllers.Comment
             return response;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
         public ActionResult<ServiceResponse<CommentResponse>> DeleteComment(int id)
         {

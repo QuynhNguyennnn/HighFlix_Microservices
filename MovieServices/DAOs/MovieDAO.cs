@@ -72,6 +72,35 @@ namespace MovieServices.DAOs
             return movies;
         }
 
+        public static List<Movie> GetListMovieByCategory(int categoryId)
+        {
+            List<int> movieIds = new List<int>();
+            try
+            {
+                using (var context = new HighFlixV4Context())
+                {
+                    var listMovieId = context.MovieCategories.Where(c => c.CategoryId == categoryId).ToList();
+                    foreach (var movie in listMovieId)
+                    {
+                        movieIds.Add(movie.MovieId);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+            List<Movie> movies = new List<Movie>();
+            foreach (var movieID in movieIds)
+            {
+                var movie = GetMovieById(movieID);
+                movies.Add(movie);
+            }
+            return movies;
+        }
+
         public static Movie CreateMovie(Movie movie, List<int> cates)
         {
             try
@@ -134,6 +163,7 @@ namespace MovieServices.DAOs
                     if (_movie != null)
                     {
                         _movie.IsActive = false;
+                        MovieCategoryDAO.DeleteMovieCategory(_movie.MovieId);
 
                         // Sử dụng SetValues để cập nhật giá trị từ movie vào _movie
                         context.Entry(_movie).CurrentValues.SetValues(_movie);

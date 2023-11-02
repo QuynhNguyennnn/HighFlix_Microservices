@@ -15,7 +15,7 @@ namespace MovieServices.Services.MovieServices
 
         public List<Movie> GetMovieListNew() => MovieDAO.GetMovieListNew();
 
-        public List<Movie> GetMoviesByCategoryId(int categoryId) => MovieDAO.GetMoviesByCategoryId(categoryId);
+        public List<Movie> GetMovieListByCategory(int categoryId) => MovieDAO.GetListMovieByCategory(categoryId);
 
         public Movie CreateMovie(Movie movie, List<int> cates) => MovieDAO.CreateMovie(movie, cates);
 
@@ -24,5 +24,7 @@ namespace MovieServices.Services.MovieServices
         public Movie DeleteMovie(int id) => MovieDAO.DeleteMovie(id);
 
         public List<Movie> SearchMovies(string searchMovieName) => MovieDAO.SearchMovies(searchMovieName);
+
+        public List<Movie> GetMoviesByCategoryId(int categoryId) => MovieDAO.GetMoviesByCategoryId(categoryId);
     }
 }

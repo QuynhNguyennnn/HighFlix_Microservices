@@ -39,7 +39,7 @@ namespace MovieServices.Controllers.Episode
         }
 
 
-        [HttpGet("movieId")]
+        [HttpGet("movie/movieId")]
         public ActionResult<ServiceResponse<List<EpisodeResponse>>> GetEpisodesByMovieId(int movieId)
         {
             var response = new ServiceResponse<List<EpisodeResponse>>();
@@ -79,6 +79,7 @@ namespace MovieServices.Controllers.Episode
 
             return response;
         }
+        
 
 
         [HttpGet("id")]
