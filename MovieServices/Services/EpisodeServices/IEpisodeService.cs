@@ -11,5 +11,6 @@ namespace MovieServices.Services.EpisodeServices
         Episode CreateEpisode(Episode episode);
         Episode UpdateEpisode(Episode episode);
         Episode DeleteEpisode(int episodeId);
+        Episode GetLastestEpisodesByMovieId(int movieId);
     }
 }
