@@ -39,7 +39,7 @@ namespace MovieServices.Controllers.Episode
         }
 
 
-        [HttpGet("movieId")]
+        [HttpGet("movie/movieId")]
         public ActionResult<ServiceResponse<List<EpisodeResponse>>> GetEpisodesByMovieId(int movieId)
         {
             var response = new ServiceResponse<List<EpisodeResponse>>();
@@ -55,6 +55,32 @@ namespace MovieServices.Controllers.Episode
             response.TotalDataList = episodeResponseList.Count;
             return response;
         }
+        [HttpGet("latestByMovie/{movieId}")]
+        public ActionResult<ServiceResponse<EpisodeResponse>> GetLastestEpisodesByMovieId(int movieId)
+        {
+            var response = new ServiceResponse<EpisodeResponse>();
+
+            // Retrieve the latest episode for the given movieId from the service
+            var episode = service.GetLastestEpisodesByMovieId(movieId);
+
+            if (episode != null)
+            {
+                var episodeResponse = _mapper.Map<EpisodeResponse>(episode);
+                response.Data = episodeResponse;
+                response.Message = "Get Latest Episode";
+                response.Status = 200;
+                response.TotalDataList = 1;
+            }
+            else
+            {
+                response.Message = "No latest episode found for the specified movieId.";
+                response.Status = 404; // You might want to return a different status code for not found.
+            }
+
+            return response;
+        }
+        
+
 
         [HttpGet("id")]
         public ActionResult<ServiceResponse<EpisodeResponse>> GetEpisodeById(int id)
@@ -104,32 +130,6 @@ namespace MovieServices.Controllers.Episode
             response.Data = episodeResponse;
             response.Status = 200;
             response.Message = "Delete Episode";
-            return response;
-        }
-
-
-        [HttpGet("latestByMovie/{movieId}")]
-        public ActionResult<ServiceResponse<EpisodeResponse>> GetLastestEpisodesByMovieId(int movieId)
-        {
-            var response = new ServiceResponse<EpisodeResponse>();
-
-            // Retrieve the latest episode for the given movieId from the service
-            var episode = service.GetLastestEpisodesByMovieId(movieId);
-
-            if (episode != null)
-            {
-                var episodeResponse = _mapper.Map<EpisodeResponse>(episode);
-                response.Data = episodeResponse;
-                response.Message = "Get Latest Episode";
-                response.Status = 200;
-                response.TotalDataList = 1;
-            }
-            else
-            {
-                response.Message = "No latest episode found for the specified movieId.";
-                response.Status = 404;
-            }
-
             return response;
         }
     }

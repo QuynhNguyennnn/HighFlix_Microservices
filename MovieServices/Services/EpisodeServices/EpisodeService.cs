@@ -8,6 +8,7 @@ namespace MovieServices.Services.EpisodeServices
         public List<Episode> GetEpisodes() => EpisodeDAO.GetEpisodes();
         
         public List<Episode> GetEpisodesByMovieId(int movieId) => EpisodeDAO.GetEpisodesByMovieId(movieId);
+        public Episode GetLastestEpisodesByMovieId(int movieId) => EpisodeDAO.GetLastestEpisodesByMovieId(movieId);
 
         public Episode GetEpisodeById(int episodeId) => EpisodeDAO.GetEpisodeById(episodeId);
 
@@ -16,6 +17,5 @@ namespace MovieServices.Services.EpisodeServices
         public Episode UpdateEpisode(Episode episode) => EpisodeDAO.UpdateEpisode(episode);
 
         public Episode DeleteEpisode(int episodeId) => EpisodeDAO.DeleteEpisode(episodeId);
-        public Episode GetLastestEpisodesByMovieId(int movieId) => EpisodeDAO.GetLastestEpisodesByMovieId(movieId);
     }
 }

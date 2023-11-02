@@ -26,7 +26,7 @@ namespace MovieServices.Controllers.Comment
             _mapper = mapper;
         }
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult<ServiceResponse<List<CommentResponse>>> GetComments()
         {
             var response = new ServiceResponse<List<CommentResponse>>();
@@ -42,7 +42,7 @@ namespace MovieServices.Controllers.Comment
             response.TotalDataList = commentResponseList.Count;
             return response;
         }
-        [HttpGet("movieId")]
+        [HttpGet("movie/movieId")]
         public ActionResult<ServiceResponse<List<CommentResponse>>> GetCommentByMovieId(int movieId)
         {
             var response = new ServiceResponse<List<CommentResponse>>();
@@ -58,6 +58,31 @@ namespace MovieServices.Controllers.Comment
             response.TotalDataList = commentResponseList.Count;
             return response;
         }
+        [HttpGet("averageRating/{movieId}")]
+        public ActionResult<ServiceResponse<double>> CalculateAverageRating(int movieId)
+        {
+            var response = new ServiceResponse<double>();
+            var comments = service.GetCommentByMovieId(movieId);
+
+            var validComments = comments.Where(comment => comment.IsActive);
+
+            if (validComments.Any())
+            {
+                double averageRating = (double)validComments.Average(comment => comment.Rating);
+                response.Data = averageRating;
+                response.Message = "Average Rating Calculated";
+                response.Status = 200;
+            }
+            else
+            {
+                response.Data = 0; 
+                response.Message = "No Valid Comments Found";
+                response.Status = 404;
+            }
+
+            return response;
+        }
+
 
         [HttpGet("id")]
         public ActionResult<ServiceResponse<CommentResponse>> GetCommentById(int id)
@@ -74,7 +99,7 @@ namespace MovieServices.Controllers.Comment
 
 
         [HttpPost("Create")]
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         public ActionResult<ServiceResponse<CommentResponse>> CreateComment(CreateCommentDto createCommentDto)
         {
             Models.Comment comment = _mapper.Map<Models.Comment>(createCommentDto);
@@ -98,7 +123,7 @@ namespace MovieServices.Controllers.Comment
             return response;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
         public ActionResult<ServiceResponse<CommentResponse>> DeleteComment(int id)
         {
@@ -107,31 +132,6 @@ namespace MovieServices.Controllers.Comment
             response.Data = commentResponse;
             response.Status = 200;
             response.Message = "Delete Comment";
-            return response;
-        }
-
-        [HttpGet("averageRating/{movieId}")]
-        public ActionResult<ServiceResponse<double>> CalculateAverageRating(int movieId)
-        {
-            var response = new ServiceResponse<double>();
-            var comments = service.GetCommentByMovieId(movieId);
-
-            var validComments = comments.Where(comment => comment.IsActive);
-
-            if (validComments.Any())
-            {
-                double averageRating = (double)validComments.Average(comment => comment.Rating);
-                response.Data = averageRating;
-                response.Message = "Average Rating Calculated";
-                response.Status = 200;
-            }
-            else
-            {
-                response.Data = 0;
-                response.Message = "No Valid Comments Found";
-                response.Status = 404;
-            }
-
             return response;
         }
     }
