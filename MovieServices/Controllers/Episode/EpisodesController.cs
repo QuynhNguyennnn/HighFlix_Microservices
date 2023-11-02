@@ -74,7 +74,7 @@ namespace MovieServices.Controllers.Episode
             else
             {
                 response.Message = "No latest episode found for the specified movieId.";
-                response.Status = 404; // You might want to return a different status code for not found.
+                response.Status = 404; 
             }
 
             return response;
