@@ -42,7 +42,7 @@ namespace MovieServices.Controllers.Comment
             response.TotalDataList = commentResponseList.Count;
             return response;
         }
-        [HttpGet("comment/movieId")]
+        [HttpGet("movie/movieId")]
         public ActionResult<ServiceResponse<List<CommentResponse>>> GetCommentByMovieId(int movieId)
         {
             var response = new ServiceResponse<List<CommentResponse>>();
