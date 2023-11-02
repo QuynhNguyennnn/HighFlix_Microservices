@@ -12,6 +12,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Options;
 using CategoryServices.DTOs.ResponseDTO;
 
+
 namespace MovieServices.Controllers.Movie
 {
     [Route("api/[controller]")]
@@ -178,39 +179,7 @@ namespace MovieServices.Controllers.Movie
             return response;
         }
 
-        [HttpGet("categoryId")]
-        public ActionResult<ServiceResponse<List<MovieResponse>>> GetMovieListByCategoryId(int categoryId)
-        {
-            var response = new ServiceResponse<List<MovieResponse>>();
-            var movieResponseList = new List<MovieResponse>();
-            var movieList = service.GetMovieListByCategory(categoryId);
-            foreach (var movie in movieList)
-            {
-                List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
-                MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
-                movieResponse.Categories = new List<string>();
-                if (movieResponse.Description.Contains("N\'"))
-                {
-                    movieResponse.Description = movieResponse.Description.TrimEnd('\'');
-                    movieResponse.Description = movieResponse.Description.Substring(2);
-                }
-                if (movieResponse.AliasName.Contains("N\'"))
-                {
-                    movieResponse.AliasName = movieResponse.AliasName.TrimEnd('\'');
-                    movieResponse.AliasName = movieResponse.AliasName.Substring(2);
-                }
-                movieCategories.ForEach(movieCategory =>
-                {
-                    movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
-                });
-                movieResponseList.Add(movieResponse);
-            }
-            response.Data = movieResponseList;
-            response.Message = "Get Movie List By Category";
-            response.Status = 200;
-            response.TotalDataList = movieList.Count;
-            return response;
-        }
+
 
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
@@ -260,6 +229,56 @@ namespace MovieServices.Controllers.Movie
             var movies = service.SearchMovies(searchMovieName);
             return Ok(movies);
         }
+        [HttpGet("category/{categoryId}")]
+        public ActionResult<ServiceResponse<List<MovieResponse>>> GetMoviesByCategoryId(int categoryId)
+        {
+            var response = new ServiceResponse<List<MovieResponse>>();
+            var movieResponseList = new List<MovieResponse>();
+
+            try
+            {
+                List<Models.Movie> movies = service.GetMoviesByCategoryId(categoryId); 
+
+                foreach (var movie in movies)
+                {
+                    List<MovieCategory> movieCategories = MovieCategoryDAO.GetCategoryByMovieId(movie.MovieId);
+                    MovieResponse movieResponse = _mapper.Map<MovieResponse>(movie);
+                    movieResponse.Categories = new List<string>();
+
+                    if (movieResponse.Description != null && movieResponse.Description.Contains("N\'"))
+                    {
+                        movieResponse.Description = movieResponse.Description.Replace("N'", string.Empty);
+                    }
+
+                    if (movieResponse.AliasName != null && movieResponse.AliasName.Contains("N\'"))
+                    {
+                        movieResponse.AliasName = movieResponse.AliasName.Replace("N'", string.Empty);
+                    }
+
+                    movieCategories.ForEach(movieCategory =>
+                    {
+                        movieResponse.Categories.Add(movieCategory.CategoryId.ToString());
+                    });
+
+                    movieResponseList.Add(movieResponse);
+                }
+
+                response.Data = movieResponseList;
+                response.Message = "Get Movies by Category";
+                response.Status = 200;
+                response.TotalDataList = movieResponseList.Count;
+            }
+            catch (Exception ex)
+            {
+                response.Data = null;
+                response.Message = ex.Message;
+                response.Status = 500;
+                response.TotalDataList = 0;
+            }
+
+            return response;
+        }
+
     }
 }
 

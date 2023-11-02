@@ -1,8 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using MovieServices.DAOs;
 using MovieServices.DTOs.MovieDTOs.ResponseDTO;
 using MovieServices.Models;
+using System;
+using System.Collections.Generic;
 
 namespace MovieServices.Services.MovieServices
 {
@@ -14,14 +15,14 @@ namespace MovieServices.Services.MovieServices
 
         public List<Movie> GetMovieListNew() => MovieDAO.GetMovieListNew();
 
-        public List<Movie> GetMovieListByCategory(int categoryId) => MovieDAO.GetListMovieByCategory(categoryId);
+        public List<Movie> GetMoviesByCategoryId(int categoryId) => MovieDAO.GetMoviesByCategoryId(categoryId);
 
         public Movie CreateMovie(Movie movie, List<int> cates) => MovieDAO.CreateMovie(movie, cates);
 
         public Movie UpdateMovie(Movie movie, List<int> cates) => MovieDAO.UpdateMovie(movie, cates);
 
         public Movie DeleteMovie(int id) => MovieDAO.DeleteMovie(id);
-        public List<Movie> SearchMovies(string searchMovieName) => MovieDAO.SearchMovies(searchMovieName);
 
+        public List<Movie> SearchMovies(string searchMovieName) => MovieDAO.SearchMovies(searchMovieName);
     }
 }

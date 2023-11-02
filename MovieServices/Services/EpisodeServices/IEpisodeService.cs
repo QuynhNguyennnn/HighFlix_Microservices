@@ -6,6 +6,7 @@ namespace MovieServices.Services.EpisodeServices
     {
         List<Episode> GetEpisodes();
         List<Episode> GetEpisodesByMovieId(int movieId);
+        Episode GetLastestEpisodesByMovieId(int movieId);
         Episode GetEpisodeById(int episodeId);
         Episode CreateEpisode(Episode episode);
         Episode UpdateEpisode(Episode episode);

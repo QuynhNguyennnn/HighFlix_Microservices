@@ -58,6 +58,31 @@ namespace MovieServices.Controllers.Comment
             response.TotalDataList = commentResponseList.Count;
             return response;
         }
+        [HttpGet("averageRating/{movieId}")]
+        public ActionResult<ServiceResponse<double>> CalculateAverageRating(int movieId)
+        {
+            var response = new ServiceResponse<double>();
+            var comments = service.GetCommentByMovieId(movieId);
+
+            var validComments = comments.Where(comment => comment.IsActive);
+
+            if (validComments.Any())
+            {
+                double averageRating = (double)validComments.Average(comment => comment.Rating);
+                response.Data = averageRating;
+                response.Message = "Average Rating Calculated";
+                response.Status = 200;
+            }
+            else
+            {
+                response.Data = 0; 
+                response.Message = "No Valid Comments Found";
+                response.Status = 404;
+            }
+
+            return response;
+        }
+
 
         [HttpGet("id")]
         public ActionResult<ServiceResponse<CommentResponse>> GetCommentById(int id)
