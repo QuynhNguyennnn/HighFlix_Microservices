@@ -79,6 +79,7 @@ namespace MovieServices.Controllers.Episode
 
             return response;
         }
+        
 
 
         [HttpGet("id")]
@@ -129,32 +130,6 @@ namespace MovieServices.Controllers.Episode
             response.Data = episodeResponse;
             response.Status = 200;
             response.Message = "Delete Episode";
-            return response;
-        }
-
-
-        [HttpGet("latestByMovie/{movieId}")]
-        public ActionResult<ServiceResponse<EpisodeResponse>> GetLastestEpisodesByMovieId(int movieId)
-        {
-            var response = new ServiceResponse<EpisodeResponse>();
-
-            // Retrieve the latest episode for the given movieId from the service
-            var episode = service.GetLastestEpisodesByMovieId(movieId);
-
-            if (episode != null)
-            {
-                var episodeResponse = _mapper.Map<EpisodeResponse>(episode);
-                response.Data = episodeResponse;
-                response.Message = "Get Latest Episode";
-                response.Status = 200;
-                response.TotalDataList = 1;
-            }
-            else
-            {
-                response.Message = "No latest episode found for the specified movieId.";
-                response.Status = 404;
-            }
-
             return response;
         }
     }
