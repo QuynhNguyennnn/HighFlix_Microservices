@@ -55,7 +55,7 @@ namespace MovieServices.DAOs
             {
                 using (var context = new HighFlixV4Context())
                 {
-                    var movieList = context.Movies.OrderByDescending(movie => movie.MovieId).Take(10).ToList();
+                    var movieList = context.Movies.OrderByDescending(movie => movie.MovieId).Where(movie => movie.IsActive).Take(10).ToList();
                     foreach (var movie in movieList)
                     {
                         if (movie.IsActive)
