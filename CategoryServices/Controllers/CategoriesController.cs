@@ -82,12 +82,12 @@ namespace CategoryServices.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("Delete")]
-        public ActionResult<ServiceResponse<Category>> DeleteCategory(int id)
+        public ActionResult<ServiceResponse<CategoryResponse>> DeleteCategory(int id)
         {
-            Category category = service.DeleteCategory(id);
-
-            var response = new ServiceResponse<Category>();
-            response.Data = category;
+            Models.Category category = service.DeleteCategory(id);
+            var categoryResponse = _mapper.Map<CategoryResponse>(category);
+            var response = new ServiceResponse<CategoryResponse>();
+            response.Data = categoryResponse;
             response.Message = "Delete Category";
             response.Status = 200;
             return response;
