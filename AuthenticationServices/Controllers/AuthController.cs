@@ -221,12 +221,13 @@ namespace APIS.Controllers.Authentication
                 response.Message = "User not found.";
                 response.Status = 404;
                 return NotFound(response);
-            } else if (user.IsActive == false)
+            } 
+            /*else if (user.IsActive == false)
             {
                 response.Message = "User has already deleted.";
                 response.Status = 400;
                 return BadRequest(response);
-            }
+            }*/
             response.Message = "User deleted.";
             response.Status = 200;
             return Ok(response);
